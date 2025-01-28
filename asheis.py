@@ -74,7 +74,7 @@ class asheis:
         config_obj.read("demcmc_FIP/configfile.ini")
         directories = config_obj["directories"]
         main_dir = directories['main_dir']
-        self.dens_dir = main_dir+'density'
+        self.dens_dir = main_dir+'density/'
 
     def check_window(self, line):
         print(f'Checking {line}')
