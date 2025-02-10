@@ -246,7 +246,7 @@ if __name__ == "__main__":
     # Determine the operating system type (Linux or macOS)
     # Set the default number of cores based on the operating system
     if platform.system() == "Linux":
-        default_cores = len(os.sched_getaffinity(0))  # above 64 seems to break the MSSL machine - probably due to no. cores = 64?
+        default_cores = 48#len(os.sched_getaffinity(0))  # above 64 seems to break the MSSL machine - probably due to no. cores = 64?
     elif platform.system() == "Darwin":
         default_cores = 8
     else:
