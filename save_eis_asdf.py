@@ -12,3 +12,12 @@ eis_map.peek(clip_interval=(1, 99.99) * u.percent)
 tree = {'eis_map': eis_map}
 with asdf.AsdfFile(tree) as asdf_file:
     asdf_file.write_to("eis_map.asdf")
+
+
+
+
+
+Plot the image with clipping (optional)
+eis_map.peek(clip_interval=(1, 99.99) * u.percent)
+plt.show()  # Ensures the plot appears
+
