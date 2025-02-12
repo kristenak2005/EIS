@@ -81,7 +81,7 @@
 /mnt/scratch/data/spruksk2/data/eis_20151020_163536.data.h5
 /mnt/scratch/data/spruksk2/data/eis_20151020_164125.data.h5
 /mnt/scratch/data/spruksk2/data/eis_20151020_203034.data.h5
-/mnt/scratch/data/spruksk2/data/eis_20151020_203249.data.h5
+-/mnt/scratch/data/spruksk2/data/eis_20151020_203249.data.h5
 /mnt/scratch/data/spruksk2/data/eis_20151020_211311.data.h5
 /mnt/scratch/data/spruksk2/data/eis_20151020_211526.data.h5
 /mnt/scratch/data/spruksk2/data/eis_20151020_211740.data.h5
@@ -90,8 +90,8 @@
 /mnt/scratch/data/spruksk2/data/eis_20151020_212424.data.h5
 /mnt/scratch/data/spruksk2/data/eis_20151020_212638.data.h5
 /mnt/scratch/data/spruksk2/data/eis_20151020_212853.data.h5
-/mnt/scratch/data/spruksk2/data/
-/mnt/scratch/data/spruksk2/data/
+/mnt/scratch/data/spruksk2/data/eis_20151020_213107.data.h5
+/mnt/scratch/data/spruksk2/data/eis_20151020_213322.data.h5
 /mnt/scratch/data/spruksk2/data/
 /mnt/scratch/data/spruksk2/data/
 /mnt/scratch/data/spruksk2/data/
