@@ -1,9 +1,9 @@
-/mnt/scratch/data/spruksk2/data/eis_20151018_102719.data.h5 
-/mnt/scratch/data/spruksk2/data/eis_20151018_173743.data.h5
-/mnt/scratch/data/spruksk2/data/eis_20151018_113839.data.h5
-/mnt/scratch/data/spruksk2/data/eis_20151018_191443.data.h5
-/mnt/scratch/data/spruksk2/data/eis_20151018_124939.data.h5
-#/mnt/scratch/data/spruksk2/data/eis_20151018_205143.data.h5
+-/mnt/scratch/data/spruksk2/data/eis_20151018_102719.data.h5 
+-/mnt/scratch/data/spruksk2/data/eis_20151018_173743.data.h5
+-/mnt/scratch/data/spruksk2/data/eis_20151018_113839.data.h5
+-/mnt/scratch/data/spruksk2/data/eis_20151018_191443.data.h5
+-/mnt/scratch/data/spruksk2/data/eis_20151018_124939.data.h5
+/mnt/scratch/data/spruksk2/data/eis_20151018_205143.data.h5
 /mnt/scratch/data/spruksk2/data/eis_20151018_140939.data.h5
 /mnt/scratch/data/spruksk2/data/eis_20151018_222743.data.h5
 /mnt/scratch/data/spruksk2/data/eis_20151018_160113.data.h5 
