@@ -37,14 +37,15 @@ data_location = '/mnt/scratch/data/spruksk2/data'
 output_location = '/mnt/scratch/data/spruksk2/python_output/EIS_work/'+date
 os.makedirs(output_location, exist_ok=True)
 
-results = Fido.search(a.Time(timerange[0], timerange[1]),
-                      a.Instrument('EIS'),
-                      a.Physobs.intensity,
-                      a.Source('Hinode'),
-                      a.Provider('NRL'),
-                      a.Level('1'))  
-files = Fido.fetch(results, path = data_location, overwrite=False, progress=True)
-
+#results = Fido.search(a.Time(timerange[0], timerange[1]),
+                    #  a.Instrument('EIS'),
+                    #  a.Physobs.intensity,
+                    #  a.Source('Hinode'),
+                    #  a.Provider('NRL'),
+                    #  a.Level('1'))  
+#files = Fido.fetch(results, path = data_location, overwrite=False, progress=True)
+files = sorted(glob.glob(os.path.join(data_location, '*.h5')))
+#ar not included as not in data,
 fitted_lines = {
     "fe_12_195" : [
         "eis_20151018_102719.fe_12_195_119.2c-0.fit.h5",
@@ -52,13 +53,29 @@ fitted_lines = {
         "eis_20151018_191443.fe_12_195_119.2c-0.fit.h5",
         "eis_20151018_113839.fe_12_195_119.2c-0.fit.h5",
         "eis_20151018_173743.fe_12_195_119.2c-0.fit.h5"
-    ],
-    "ar_14_194" : ["ar_14_194_396.6c.template.h5",5,"Ar XIV 194$\AA$"],
-    "ca_14_193" : ["ca_14_193_874.6c.template.h5",1,"Ca XIV 193$\AA$"],
-    "si_10_258" : ["si_10_258_375.1c.template.h5",0,"Si X 258$\AA$"],
-    "s_10_264" : ["s__10_264_233.1c.template.h5",0,"S X 264$\AA$"],
-    "fe_13_202" : ["fe_13_202_044.1c.template.h5",0,"Fe XIII 202$\AA$"],
-    "fe_13_203" : ["fe_13_203_826.2c.template.h5",1,"Fe XIII 203$\AA$"]
+  ],
+ "si_10_258" : [
+    "eis_20151018_113839.si_10_258_375.1c-0.fit.h5",
+    "eis_20151018_102719.si_10_258_375.1c-0.fit.h5",
+    "eis_20151018_173743.si_10_258_375.1c-0.fit.h5",
+    "eis_20151018_124939.si_10_258_375.1c-0.fit.h5", 
+    "eis_20151018_191443.si_10_258_375.1c-0.fit.h5"
+  ],
+  "s_10_264" : [
+    "eis_20151018_124939.s__10_264_233.1c-0.fit.h5",
+    "eis_20151018_102719.s__10_264_233.1c-0.fit.h5",
+    "eis_20151018_191443.s__10_264_233.1c-0.fit.h5",
+    "eis_20151018_113839.s__10_264_233.1c-0.fit.h5",
+    "eis_20151018_173743.s__10_264_233.1c-0.fit.h5"
+  ],
+  "fe_13_202" : [
+    "eis_20151018_124939.fe_13_202_044.1c-0.fit.h5",
+    "eis_20151018_102719.fe_13_202_044.1c-0.fit.h5",
+    "eis_20151018_191443.fe_13_202_044.1c-0.fit.h5",
+    "eis_20151018_113839.fe_13_202_044.1c-0.fit.h5",
+    "eis_20151018_173743.fe_13_202_044.1c-0.fit.h5"
+  ]
+    
 }
 
 
