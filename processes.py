@@ -20,8 +20,8 @@ import asdf
 
 #Specific timestamps for analysis
 eis_evts = ['20151018_102719', '20151018_173743', '20151018_113839', '20151018_191443', '20151018_124939']
-
-time_range = ['2015/10/18T10:27:19', '2015/10/18T12:49:39']
+#T is space
+time_range = ['2015/10/18T10:27:05', '2015/10/18T12:49:55']
 date = '20151018'
 
 timerange = [dt.datetime.strptime(tr,'%Y/%m/%dT%H:%M:%S') for tr in time_range]
