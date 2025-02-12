@@ -70,6 +70,268 @@ def get_aia_filelist(data_dir, passband, file_date):
             files_dt.append(dt.datetime.strptime(hdr.get('DATE-OBS'),'%Y-%m-%dT%H:%M:%S.%f'))
     return files, files_dt
 
+## Function to get the list of HMI filenames
+def get_hmi_filelist(data_dir, obs, file_date):
+    files = glob.glob(data_dir+'HMI_mag/'+file_date+'/*.fits', recursive=True)
+    files.sort()
+    files_dt = []
+    for file_i in files:
+        hdr = fits.getheader(file_i, 1)
+        try:
+            files_dt.append(dt.datetime.strptime(hdr.get('DATE-OBS'),'%Y-%m-%dT%H:%M:%S.%fZ'))
+        except:
+            files_dt.append(dt.datetime.strptime(hdr.get('DATE-OBS'),'%Y-%m-%dT%H:%M:%S.%f'))
+    return files, files_dt
 
+
+def get_context_img(img_time):
+# Define some constants.
+    SDO_data_directory = '/Users/dml/Data/SDO/'
+
+    aia_passband = '193'
+    cadence = a.Sample(12*u.second)
+    aia_instr = a.Instrument('AIA')
+    aia_provider = a.Provider('JSOC')
+    aia_wvlnth = a.Wavelength(int(aia_passband)*u.Angstrom, int(aia_passband)*u.Angstrom)
+
+    start_time = (parse_time(img_time)-10*u.second).strftime('%Y/%m/%d %H:%M:%S')
+    end_time = (parse_time(img_time)+10*u.second).strftime('%Y/%m/%d %H:%M:%S')
+    attrs_time = a.Time(start_time, end_time)
+    file_date = (parse_time(img_time)-10*u.second).strftime('%Y/%m/%d')
+
+# Download the AIA data    
+    f_aia, file_time = get_aia_filelist(SDO_data_directory, aia_passband, file_date)
+    if f_aia == []:
+        print('Downloading data for '+str(aia_passband).rjust(4, "0")+' passband')
+        data_dir = SDO_data_directory+aia_passband.rjust(4, "0")+'/'+file_date
+        os.makedirs(data_dir, exist_ok='True')
+        result = Fido.search(attrs_time, aia_instr, aia_wvlnth, cadence, aia_provider)
+        files = Fido.fetch(result, path = data_dir, overwrite=False, progress=True)
+
+    f_aia, file_time = get_aia_filelist(SDO_data_directory, aia_passband, file_date)
+    nearest_img = closest(np.array(file_time), dt.datetime.strptime(start_time,"%Y/%m/%d %H:%M:%S"))
+    if dt.datetime.strptime(start_time, "%Y/%m/%d %H:%M:%S") < file_time[nearest_img] < dt.datetime.strptime(end_time, "%Y/%m/%d %H:%M:%S"):
+        print('Data already downloaded for '+str(aia_passband).rjust(4, "0")+' passband')
+    else:
+        print('Downloading data for '+str(aia_passband).rjust(4, "0")+' passband')
+        data_dir = SDO_data_directory+aia_passband.rjust(4, "0")+'/'+file_date
+        os.makedirs(data_dir, exist_ok='True')
+        result = Fido.search(attrs_time, aia_instr, aia_wvlnth, cadence, aia_provider)
+        files = Fido.fetch(result, path = data_dir, overwrite=False, progress=True)
+        f_aia = glob.glob(data_dir+'/*.fits')
+        f_aia.sort()
+
+# Now find the nearest AIA image in time to the EIS map and load it as a map
+    time = []
+    for file_i in f_aia:
+        hdr = fits.getheader(file_i, 1)
+        try:
+            time.append(dt.datetime.strptime(hdr.get('DATE-OBS'),'%Y-%m-%dT%H:%M:%S.%fZ'))
+        except:
+            time.append(dt.datetime.strptime(hdr.get('DATE-OBS'),'%Y-%m-%dT%H:%M:%S.%f'))
+
+    ind = np.abs([parse_time(list) - parse_time(img_time) for list in time])
+    map_aia = Map(f_aia[ind.argmin(0)])
+    aia_map_updated_pointing = update_pointing(map_aia)
+    aia_map_registered = register(aia_map_updated_pointing)
+    aia_map_corrected = correct_degradation(aia_map_registered)
+    aia_map = aia_map_corrected/aia_map_corrected.exposure_time
+    
+# Download the HMI data
+    hmi_instr = a.Instrument('HMI')
+    hmi_obs = a.Physobs.los_magnetic_field
+
+    f_hmi, file_time = get_hmi_filelist(SDO_data_directory, hmi_obs, file_date)
+    if f_hmi == []:
+        print('Downloading HMI data')
+        data_dir = SDO_data_directory+'HMI_mag/'+file_date
+        os.makedirs(data_dir, exist_ok='True')
+        result = Fido.search(attrs_time, hmi_instr, hmi_obs, cadence)
+        files = Fido.fetch(result, path = data_dir, overwrite=False, progress=True)
+
+    f_hmi, file_time = get_hmi_filelist(SDO_data_directory, hmi_obs, file_date)
+    nearest_img = closest(np.array(file_time), dt.datetime.strptime(start_time,"%Y/%m/%d %H:%M:%S"))
+    if dt.datetime.strptime(start_time, "%Y/%m/%d %H:%M:%S") < file_time[nearest_img] < dt.datetime.strptime(end_time, "%Y/%m/%d %H:%M:%S"):
+        print('HMI Data already downloaded')
+    else:
+        print('Downloading HMI data')
+        data_dir = SDO_data_directory+'HMI_mag/'+file_date
+        os.makedirs(data_dir, exist_ok='True')
+        result = Fido.search(attrs_time, hmi_instr, hmi_obs, cadence)
+        files = Fido.fetch(result, path = data_dir, overwrite=False, progress=True)
+        f_hmi = glob.glob(data_dir+'/*.fits')
+        f_hmi.sort()
+
+# Now find the nearest HMI image in time to the EIS map and load it as a map
+    time = []
+    for file_i in f_hmi:
+        hdr = fits.getheader(file_i, 1)
+        try:
+            time.append(dt.datetime.strptime(hdr.get('DATE-OBS'),'%Y-%m-%dT%H:%M:%S.%fZ'))
+        except:
+            time.append(dt.datetime.strptime(hdr.get('DATE-OBS'),'%Y-%m-%dT%H:%M:%S.%f'))
+
+    ind = np.abs([parse_time(list) - parse_time(img_time) for list in time])
+    map_hmi = Map(f_hmi[ind.argmin(0)])
+    hmi_map = map_hmi.reproject_to(aia_map.wcs)
+
+    return aia_map, hmi_map
+
+def fit_data(file,fitted_lines,line,product,output_location):
+    template_name = fitted_lines[f'{line}'][0]
+    path = output_location+'/'+file.split('/')[8][0:19]+'.'+(f'{template_name}'.replace(".template",f"-{fitted_lines[f'{line}'][1]}.fit"))
+    if os.path.isfile(path) == False:
+        template = eispac.read_template(eispac.data.get_fit_template_filepath(template_name))
+        cube = eispac.read_cube(file, window=template.central_wave)
+        fit_res = eispac.fit_spectra(cube, template, ncpu='max')
+        save_filepaths = eispac.save_fit(fit_res, save_dir=output_location)
+        print(save_filepaths)
+    else:
+        fit_res=eispac.read_fit(path)
+
+    fit_res.fit[f'{product}'] = fit_res.shift2wave(fit_res.fit[f'{product}'],wave=195.119)
+    return fit_res
+
+
+def get_velocity(line,file,fitted_lines,output_location):
+    fit_res = fit_data(file,fitted_lines,line,'vel',output_location)
+    m = fit_res.get_map(component = fitted_lines[f'{line}'][1],measurement='velocity')
+    return m, fit_res
+
+def get_width(line,file,fitted_lines,output_location):
+    fit_res = fit_data(file,fitted_lines,line,'vel',output_location)
+    m = fit_res.get_map(component = fitted_lines[f'{line}'][1],measurement='width')
+    return m, fit_res
+
+
+def get_composition(linepair, filename, output_location):
+    if linepair == "SiS":
+        lines=['si_10_258','s_10_264','Si X-S X 1']
+    elif linepair == "CaAr":
+        lines=['ca_14_193','ar_14_194','Ca XIV-Ar XIV 1'] 
+    else:
+        print('No line database can be found. Add your line in code.')
+        
+    template_names=[fitted_lines[lines[0]][0],fitted_lines[lines[1]][0]]
+    templates = [eispac.read_template(eispac.data.get_fit_template_filepath(t)) for t in template_names]
+
+    outfiles=[]
+    for temp in range(0, len(templates)):
+    
+        t = template_names[temp]
+        path = output_location+'/'+filename.split('/')[8][0:19]+'.'+(f'{t}'.replace(".template",f"-{fitted_lines[lines[temp]][1]}.fit"))
+
+        if os.path.isfile(path) == False:
+            cube = eispac.read_cube(filename, window=t.central_wave)
+            fit_res = eispac.fit_spectra(cube, t, ncpu='max')
+            fit_res.fit['int'] = fit_res.shift2wave(fit_res.fit['int'],wave=195.119)
+        else:
+            fit_res=eispac.read_fit(path)
+    
+        m = fit_res.get_map(component = fitted_lines[lines[temp]][1], measurement='intensity')
+        date = filename.split('/')[8][4:19]
+        os.makedirs(output_location+'/composition_files/', exist_ok=True)
+        m.save(output_location+'/composition_files/eis_'+date+'_'+lines[temp]+'.fits', overwrite=True)
+        outfiles.append(output_location+'/composition_files/eis_'+date+'_'+lines[temp]+'.fits')
+
+    m_upr = Map(outfiles[0])
+    m_lwr = Map(outfiles[1])
+    m_comp = m_upr
+    m_comp.meta['line_id'] = lines[2]
+    m_comp = Map(m_upr.data/m_lwr.data, m_upr.meta)
+    m_comp.save(output_location+'/composition_files/eis_'+date+'_composition_'+linepair+'.fits', overwrite=True)
+    return m_comp
+
+def plot_eis_fits(line, int, vel, wid, aia_map, output_location):
+    figs = (12,5)
+    wid_rat = [1,1,1,1]
+    asp = 1/4
+    fig = plt.figure(constrained_layout=True, figsize=figs)
+    gs = gridspec.GridSpec(1,4,width_ratios=wid_rat)
+    plt.rcParams['font.size'] = '10'
+    date = int.date.strftime("%Y%m%d_%H%M%S")
+    alpha = 0.1
+    plot_name = fitted_lines[f'{line}'][2]+'; '+int.date.strftime("%Y/%m/%dT%H:%M:%S")
+
+# Intensity
+    ax1 = fig.add_subplot(gs[0,0], projection = int, label = 'a)')
+
+    lwr_bnd = np.percentile(int.data, alpha)
+    upr_bnd = np.percentile(int.data, 100-alpha)
+    norm = colors.Normalize(vmin=lwr_bnd, vmax=upr_bnd)
+    int.plot_settings['norm'] = norm
+
+    int.plot(axes=ax1, title = 'a) Peak intensity', aspect=asp)
+    x = ax1.coords[0]
+    x.set_axislabel(' ')
+    x.set_ticklabel(exclude_overlapping=True)
+
+    plt.colorbar(ax=ax1,location='right', label='')
+
+# Doppler velocity
+    ax2 = fig.add_subplot(gs[0,1], projection = vel, label='b)')
+
+    vel.plot_settings['norm'].vmin = -15
+    vel.plot_settings['norm'].vmax = 15
+    vel.plot(axes=ax2, title='b) Doppler velocity', aspect=asp)
+    x = ax2.coords[0]
+    x.set_ticklabel(exclude_overlapping=True)
+    y = ax2.coords[1]
+    y.set_ticklabel_visible(False)
+
+    plt.colorbar(ax=ax2,location='right', label='')
+
+# Line width 
+    ax3 = fig.add_subplot(gs[0,2], projection = wid, label='c)')
+
+    lwr_bnd = np.percentile(wid.data, alpha)
+    upr_bnd = np.percentile(wid.data, 100-alpha)
+    norm = colors.Normalize(vmin=lwr_bnd, vmax=upr_bnd)
+    wid.plot_settings['norm'] = norm
+    wid.plot(axes=ax3, title='c) Line width', aspect=asp)
+    x = ax3.coords[0]
+    x.set_axislabel(' ')
+    x.set_ticklabel(exclude_overlapping=True)
+    y = ax3.coords[1]
+    y.set_ticklabel_visible(False)
+
+    plt.colorbar(ax=ax3,location='right', label='')
+
+# AIA context image
+    b_left = [int.bottom_left_coord.Tx-200*u.arcsec, int.bottom_left_coord.Ty-200*u.arcsec]
+    t_right = [int.top_right_coord.Tx+200*u.arcsec, int.top_right_coord.Ty+200*u.arcsec]
+
+    top_right = SkyCoord(t_right[0],  t_right[1], frame=aia_map.coordinate_frame)
+    bottom_left = SkyCoord(b_left[0], b_left[1], frame=aia_map.coordinate_frame)
+    aia_map = aia_map.submap(bottom_left, top_right=top_right)
+
+    ax4 = fig.add_subplot(gs[0,3], projection = aia_map, label='d)')
+
+    proc_img = enhance.mgn(aia_map.data, h=0.94, gamma_min=0, gamma_max=aia_map.data.max())
+    aia_map = Map(proc_img, aia_map.meta)
+
+    alpha = 0.01
+    lwr_bnd = np.percentile(aia_map.data, alpha)
+    upr_bnd = np.percentile(aia_map.data, 100-alpha)
+    norm = colors.Normalize(vmin=lwr_bnd, vmax=upr_bnd)
+    aia_map.plot_settings['norm'] = norm
+    aia_map.plot_settings['norm'] = norm
+    
+    y=ax4.coords[1]
+    y.set_axislabel(' ')
+    y.set_ticklabel_position('r')
+    y.set_axislabel_position('r')
+
+    aia_map.plot(axes=ax4, title='d) AIA context')
+
+#Overplot the EIS FoV
+    bottom_left = int.bottom_left_coord
+    top_right = int.top_right_coord
+    aia_map.draw_quadrangle(bottom_left, top_right=top_right, axes = ax4, edgecolor='blue') 
+
+    plt.suptitle(plot_name)
+
+    plt.savefig(output_location+'/EIS_fits_'+date+'_'+line+'.png', bbox_inches='tight')
+    plt.close(fig)
 
 
