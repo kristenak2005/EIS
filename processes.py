@@ -47,14 +47,14 @@ os.makedirs(output_location, exist_ok=True)
 files = sorted(glob.glob(os.path.join(data_location, '*.h5')))
 #ar not included as not in data,
 fitted_lines = {
-    "fe_12_195" : [
-        "eis_20151018_102719.fe_12_195_119.2c-0.fit.h5",
-        "eis_20151018_124939.fe_12_195_119.2c-0.fit.h5",
-        "eis_20151018_191443.fe_12_195_119.2c-0.fit.h5",
-        "eis_20151018_113839.fe_12_195_119.2c-0.fit.h5",
-        "eis_20151018_173743.fe_12_195_119.2c-0.fit.h5"
+  "fe_12_195" : [
+    "eis_20151018_102719.fe_12_195_119.2c-0.fit.h5",
+    "eis_20151018_124939.fe_12_195_119.2c-0.fit.h5",
+    "eis_20151018_191443.fe_12_195_119.2c-0.fit.h5",
+    "eis_20151018_113839.fe_12_195_119.2c-0.fit.h5",
+    "eis_20151018_173743.fe_12_195_119.2c-0.fit.h5"
   ],
- "si_10_258" : [
+  "si_10_258" : [
     "eis_20151018_113839.si_10_258_375.1c-0.fit.h5",
     "eis_20151018_102719.si_10_258_375.1c-0.fit.h5",
     "eis_20151018_173743.si_10_258_375.1c-0.fit.h5",
@@ -77,6 +77,19 @@ fitted_lines = {
   ]
     
 }
+
+## Function to get the list of AIA filenames
+def get_aia_filelist(data_dir, passband, file_date):
+    files = glob.glob(data_dir+str(passband).rjust(4, "0")+'/'+file_date+'/*.fits', recursive=True)
+    files.sort()
+    files_dt = []
+    for file_i in files:
+        hdr = fits.getheader(file_i, 1)
+        try:
+            files_dt.append(dt.datetime.strptime(hdr.get('DATE-OBS'),'%Y-%m-%dT%H:%M:%S.%fZ'))
+        except:
+            files_dt.append(dt.datetime.strptime(hdr.get('DATE-OBS'),'%Y-%m-%dT%H:%M:%S.%f'))
+    return files, files_dt
 
 
 
