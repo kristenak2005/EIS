@@ -230,7 +230,7 @@ def get_composition(linepair, filename, output_location):
     for temp in range(0, len(templates)):
     
         t = template_names[temp]
-        path = output_location+'/'+filename.split('/')[8][0:19]+'.'+(f'{t}'.replace(".template",f"-{fitted_lines[lines[temp]][1]}.fit"))
+        path = output_location+'/'+filename.split('/')[5][0:19]+'.'+(f'{t}'.replace(".template",f"-{fitted_lines[lines[temp]][1]}.fit"))
 
         if os.path.isfile(path) == False:
             cube = eispac.read_cube(filename, window=t.central_wave)
@@ -240,7 +240,7 @@ def get_composition(linepair, filename, output_location):
             fit_res=eispac.read_fit(path)
     
         m = fit_res.get_map(component = fitted_lines[lines[temp]][1], measurement='intensity')
-        date = filename.split('/')[8][4:19]
+        date = filename.split('/')[5][4:19]
         os.makedirs(output_location+'/composition_files/', exist_ok=True)
         m.save(output_location+'/composition_files/eis_'+date+'_'+lines[temp]+'.fits', overwrite=True)
         outfiles.append(output_location+'/composition_files/eis_'+date+'_'+lines[temp]+'.fits')
