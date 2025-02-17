@@ -137,13 +137,13 @@ def get_context_img(img_time):
             time.append(dt.datetime.strptime(hdr.get('DATE-OBS'),'%Y-%m-%dT%H:%M:%S.%fZ'))
         except:
             time.append(dt.datetime.strptime(hdr.get('DATE-OBS'),'%Y-%m-%dT%H:%M:%S.%f'))
-
+###changed code in the following commented out lines:
     ind = np.abs([parse_time(list) - parse_time(img_time) for list in time])
     map_aia = Map(f_aia[ind.argmin(0)])
-    aia_map_updated_pointing = update_pointing(map_aia)
-    aia_map_registered = register(aia_map_updated_pointing)
-    aia_map_corrected = correct_degradation(aia_map_registered)
-    aia_map = aia_map_corrected/aia_map_corrected.exposure_time
+    #aia_map_updated_pointing = update_pointing(map_aia)
+    aia_map_registered = register(map_aia)
+    #aia_map_corrected = correct_degradation(aia_map_registered)
+    aia_map = aia_map_registered/aia_map_registered.exposure_time
     
 # Download the HMI data
     hmi_instr = a.Instrument('HMI')
