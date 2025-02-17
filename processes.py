@@ -18,10 +18,17 @@ from astropy.coordinates import SkyCoord
 from general_routines import closest
 import asdf
 
+# Ensure map_aia is a SunPy Map object
+#from aiapy.calibrate import update_pointing
+# Extract the pointing information from the map (WCS-related info)
+#pointing = map_aia.meta  # Pointing could be a part of the metadata
+# Update the pointing using the extracted metadata
+#aia_map_updated_pointing = update_pointing(map_aia, pointing=pointing)
+#########
 #Specific timestamps for analysis
 eis_evts = ['20151018_102719', '20151018_173743', '20151018_113839', '20151018_191443', '20151018_124939']
 #T is space
-time_range = ['2015/10/18T10:27:05', '2015/10/18T12:49:55']
+time_range = ['2015/10/18T10:26:05', '2015/10/18T12:49:55']
 date = '20151018'
 
 timerange = [dt.datetime.strptime(tr,'%Y/%m/%dT%H:%M:%S') for tr in time_range]
@@ -44,7 +51,8 @@ os.makedirs(output_location, exist_ok=True)
                     #  a.Provider('NRL'),
                     #  a.Level('1'))  
 #files = Fido.fetch(results, path = data_location, overwrite=False, progress=True)
-files = sorted(glob.glob(os.path.join(data_location, '*.h5')))
+files = sorted(glob.glob(os.path.join(data_location, '*data.h5')))
+#files = sorted(glob.glob(os.path.join(data_location, 'eis_20151018_*.data.h5')))
 
 fitted_lines = {
     "fe_12_195" : ["fe_12_195_119.2c.template.h5",0,"Fe XII 195$\\AA$"],
@@ -83,12 +91,12 @@ def get_hmi_filelist(data_dir, obs, file_date):
             files_dt.append(dt.datetime.strptime(hdr.get('DATE-OBS'),'%Y-%m-%dT%H:%M:%S.%f'))
     return files, files_dt
 
-
+#spruksk2@gazelle:/mnt/scratch/data/spruksk2/SDO/0193/2015/10/18$
 def get_context_img(img_time):
 # Define some constants.
     SDO_data_directory = '/mnt/scratch/data/spruksk2/SDO/'
 
-    aia_passband = '193'
+    aia_passband = '0193'
     cadence = a.Sample(12*u.second)
     aia_instr = a.Instrument('AIA')
     aia_provider = a.Provider('JSOC')
@@ -176,10 +184,10 @@ def get_context_img(img_time):
     hmi_map = map_hmi.reproject_to(aia_map.wcs)
 
     return aia_map, hmi_map
-
+#path was chnaged to [5] as only 5 files input at the time
 def fit_data(file,fitted_lines,line,product,output_location):
     template_name = fitted_lines[f'{line}'][0]
-    path = output_location+'/'+file.split('/')[8][0:19]+'.'+(f'{template_name}'.replace(".template",f"-{fitted_lines[f'{line}'][1]}.fit"))
+    path = output_location+'/'+file.split('/')[5][0:19]+'.'+(f'{template_name}'.replace(".template",f"-{fitted_lines[f'{line}'][1]}.fit"))
     if os.path.isfile(path) == False:
         template = eispac.read_template(eispac.data.get_fit_template_filepath(template_name))
         cube = eispac.read_cube(file, window=template.central_wave)
@@ -192,6 +200,10 @@ def fit_data(file,fitted_lines,line,product,output_location):
     fit_res.fit[f'{product}'] = fit_res.shift2wave(fit_res.fit[f'{product}'],wave=195.119)
     return fit_res
 
+def get_intensity(line,file,fitted_lines,output_location):
+    fit_res = fit_data(file,fitted_lines,line,'int',output_location) # Get fitdata
+    m = fit_res.get_map(fitted_lines[f'{line}'][1],measurement='intensity') # From fitdata get map
+    return m, fit_res
 
 def get_velocity(line,file,fitted_lines,output_location):
     fit_res = fit_data(file,fitted_lines,line,'vel',output_location)
@@ -202,7 +214,6 @@ def get_width(line,file,fitted_lines,output_location):
     fit_res = fit_data(file,fitted_lines,line,'vel',output_location)
     m = fit_res.get_map(component = fitted_lines[f'{line}'][1],measurement='width')
     return m, fit_res
-
 
 def get_composition(linepair, filename, output_location):
     if linepair == "SiS":
@@ -334,4 +345,128 @@ def plot_eis_fits(line, int, vel, wid, aia_map, output_location):
     plt.savefig(output_location+'/EIS_fits_'+date+'_'+line+'.png', bbox_inches='tight')
     plt.close(fig)
 
+def plot_composition(linepair, comp, aia_map, hmi_map, output_location):
+    date = comp.date.strftime("%Y%m%d_%H%M%S")
+    if linepair == "SiS":
+        title = 'Si/S composition '+date
+    elif linepair == "CaAr":
+        title = 'Ca/Ar composition '+date
+
+    if comp.dimensions[1]/comp.dimensions[0] >= 20:
+        figs = (12,5)
+        wid_rat = [1,3,3]
+        asp = 1/4
+    else:
+        figs = (12,6)
+        wid_rat = [1,2,2]
+        asp = 1/3
+    fig = plt.figure(constrained_layout=True, figsize=figs)
+    gs = gridspec.GridSpec(1,3,width_ratios=wid_rat)
+    plt.rcParams['font.size'] = '10'
+
+# Composition
+    ax1 = fig.add_subplot(gs[0,0], projection = comp, label = 'a)')
+    norm = colors.Normalize(vmin=0, vmax=4)
+    comp.plot_settings['norm'] = norm
+    comp.plot_settings['cmap'] = 'RdYlBu'
+    comp.plot(axes=ax1, title = 'a) '+title, aspect=asp)
+    x=ax1.coords[0]
+    x.set_ticklabel(exclude_overlapping=True)
+    plt.colorbar(location='right', label='')
+    
+# Process the HMI and AIA context images
+    b_left = [comp.bottom_left_coord.Tx-200*u.arcsec, comp.bottom_left_coord.Ty-200*u.arcsec]
+    t_right = [comp.top_right_coord.Tx+200*u.arcsec, comp.top_right_coord.Ty+200*u.arcsec]
+
+    top_right = SkyCoord(t_right[0],  t_right[1], frame=aia_map.coordinate_frame)
+    bottom_left = SkyCoord(b_left[0], b_left[1], frame=aia_map.coordinate_frame)
+    aia_map = aia_map.submap(bottom_left, top_right=top_right)
+    hmi_map = hmi_map.submap(bottom_left, top_right=top_right)
+
+# AIA context image
+    ax2 = fig.add_subplot(gs[0,1], projection = aia_map, label='b)')
+
+    proc_img = enhance.mgn(aia_map.data, h=0.94, gamma_min=0, gamma_max=aia_map.data.max())
+    aia_map = Map(proc_img, aia_map.meta)
+
+    alpha = 0.01
+    lwr_bnd = np.percentile(aia_map.data, alpha)
+    upr_bnd = np.percentile(aia_map.data, 100-alpha)
+    norm = colors.Normalize(vmin=lwr_bnd, vmax=upr_bnd)
+    aia_map.plot_settings['norm'] = norm
+    aia_map.plot_settings['norm'] = norm
+    
+    aia_map.plot(axes=ax2, title='b) AIA context')
+    y = ax2.coords[1]
+    y.set_axislabel(' ')
+    y.set_ticklabel_position('l')
+    y.set_axislabel_position('l')
+
+#Overplot the EIS FoV
+    bottom_left = comp.bottom_left_coord
+    top_right = comp.top_right_coord
+    aia_map.draw_quadrangle(bottom_left, top_right=top_right, axes = ax2, edgecolor='blue') 
+
+# HMI context image
+    ax3 = fig.add_subplot(gs[0,2], projection = hmi_map, label='c)')
+
+    norm = colors.Normalize(vmin=-200, vmax=200)
+    hmi_map.plot_settings['norm'] = norm
+    
+    hmi_map.plot(axes=ax3, title='c) HMI context')
+    y=ax3.coords[1]
+    y.set_axislabel(' ')
+    y.set_ticklabel_visible(False)
+
+
+#Overplot the EIS FoV
+    bottom_left = comp.bottom_left_coord
+    top_right = comp.top_right_coord
+    hmi_map.draw_quadrangle(bottom_left, top_right=top_right, axes = ax3, edgecolor='blue') 
+
+    plt.savefig(output_location+'/EIS_composition_'+date+'_'+linepair+'.png', bbox_inches='tight')
+    plt.close(fig)
+
+line_list = ["fe_12_195","ar_14_194","ca_14_193","si_10_258","s_10_264","fe_13_202","fe_13_203"]
+
+for event in range(0, len(eis_evts)):
+
+    img_time = dt.datetime.strftime(dt.datetime.strptime(eis_evts[event],'%Y%m%d_%H%M%S'), '%Y/%m/%dT%H:%M:%S')
+    date = dt.datetime.strftime(dt.datetime.strptime(eis_evts[event],'%Y%m%d_%H%M%S'), '%Y%m%d')
+    file_date = dt.datetime.strftime(dt.datetime.strptime(eis_evts[event],'%Y%m%d_%H%M%S'), '%Y/%m/%d')
+
+    #data_location = '/Users/dml/Data/EIS/'+file_date
+    data_location = '/mnt/scratch/data/spruksk2/data'
+    os.makedirs(data_location, exist_ok=True)
+    output_location = '/mnt/scratch/data/spruksk2/python_output/EIS_work/'+eis_evts[event]
+    #output_location = '/Users/dml/python_output/EIS_work/'+eis_evts[event]
+    os.makedirs(output_location+'/save_files', exist_ok=True)
+    os.makedirs(output_location+'/plots', exist_ok=True)
+
+    f_eis = glob.glob(data_location+'/eis_'+eis_evts[event]+'.data.h5')
+    f_eis.sort()
+    
+    for file in f_eis:
+
+        aia_map, hmi_map = get_context_img(img_time)
+
+        for wvl in line_list:
+            i_map, fit_res = get_intensity(wvl,file,fitted_lines,output_location+'/save_files')
+            v_map, fit_res = get_velocity(wvl,file,fitted_lines,output_location+'/save_files')
+            w_map, fit_res = get_width(wvl,file,fitted_lines,output_location+'/save_files')
+            plot_eis_fits(wvl, i_map, v_map, w_map, aia_map, output_location+'/plots')
+
+            tree = {'int_map':i_map, 'dopp_map':v_map, 'wid_map':w_map}
+            with asdf.AsdfFile(tree) as asdf_file:  
+                asdf_file.write_to(output_location+'/EIS_fit_'+wvl+'.asdf', all_array_compression='zlib')
+
+         
+#        m_SiS = get_composition('SiS', file, output_location+'/save_files')
+#        plot_composition('SiS', m_SiS, aia_map, hmi_map, output_location+'/plots')
+#        m_CaAr = get_composition('CaAr', file, output_location+'/save_files')
+#        plot_composition('CaAr', m_CaAr, aia_map, hmi_map, output_location+'/plots')
+
+tree = {'int_map':i_map, 'dopp_map':v_map, 'wid_map':w_map}
+with asdf.AsdfFile(tree) as asdf_file:  
+    asdf_file.write_to(output_location+'/EIS_fit_'+wvl+'.asdf', all_array_compression='zlib')
 
