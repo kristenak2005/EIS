@@ -58,7 +58,7 @@ def get_hmi_filelist(data_dir, obs, file_date):
 # %%
 def get_context_img(img_time):
 # Define some constants.
-    SDO_data_directory = '/Users/dml/Data/SDO/'
+     SDO_data_directory = '/mnt/scratch/data/spruksk2/SDO/'
 
     aia_passband = '193'
     cadence = a.Sample(12*u.second)
@@ -432,9 +432,9 @@ def run_eis_processing():
     timerange = [dt.datetime.strptime(tr,'%Y/%m/%dT%H:%M:%S') for tr in time_range]
     file_date = dt.datetime.strftime(dt.datetime.strptime(time_range[0],'%Y/%m/%dT%H:%M:%S'), '%Y/%m/%d')
 
-    data_location = '/Users/dml/Data/EIS/'+file_date
+    data_location = '/mnt/scratch/data/spruksk2/data'
     os.makedirs(data_location, exist_ok=True)
-    output_location = '/Users/dml/python_output/EIS_work/'+date
+    output_location = '/mnt/scratch/data/spruksk2/python_output/EIS_work/'+date
     os.makedirs(output_location, exist_ok=True)
 
     f_eis = glob.glob(data_location+'/*.data.h5')
@@ -470,9 +470,9 @@ def run_eis_processing():
         date = dt.datetime.strftime(dt.datetime.strptime(eis_evts[event],'%Y%m%d_%H%M%S'), '%Y%m%d')
         file_date = dt.datetime.strftime(dt.datetime.strptime(eis_evts[event],'%Y%m%d_%H%M%S'), '%Y/%m/%d')
 
-        data_location = '/Users/dml/Data/EIS/'+file_date
+        data_location = '/mnt/scratch/data/spruksk2/data'
         os.makedirs(data_location, exist_ok=True)
-        output_location = '/Users/dml/python_output/EIS_work/'+eis_evts[event]
+        output_location = '/mnt/scratch/data/spruksk2/python_output/EIS_work/'+eis_evts[event]
         os.makedirs(output_location+'/save_files', exist_ok=True)
         os.makedirs(output_location+'/plots', exist_ok=True)
 
