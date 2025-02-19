@@ -58,7 +58,7 @@ def get_hmi_filelist(data_dir, obs, file_date):
 # %%
 def get_context_img(img_time):
 # Define some constants.
-     SDO_data_directory = '/mnt/scratch/data/spruksk2/SDO/'
+    SDO_data_directory = '/mnt/scratch/data/spruksk2/SDO/'
 
     aia_passband = '193'
     cadence = a.Sample(12*u.second)
