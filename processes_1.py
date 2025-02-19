@@ -156,7 +156,7 @@ def get_context_img(img_time):
 # %%
 def fit_data(file,fitted_lines,line,product,output_location):
     template_name = fitted_lines[f'{line}'][0]
-    path = output_location+'/'+file.split('/')[8][0:19]+'.'+(f'{template_name}'.replace(".template",f"-{fitted_lines[f'{line}'][1]}.fit"))
+    path = output_location+'/'+file.split('/')[5][0:19]+'.'+(f'{template_name}'.replace(".template",f"-{fitted_lines[f'{line}'][1]}.fit"))
     if os.path.isfile(path) == False:
         template = eispac.read_template(eispac.data.get_fit_template_filepath(template_name))
         cube = eispac.read_cube(file, window=template.central_wave)
@@ -215,7 +215,7 @@ def get_composition(linepair, filename, output_location, fitted_lines):
     for temp in range(0, len(templates)):
     
         t = template_names[temp]
-        path = output_location+'/'+filename.split('/')[8][0:19]+'.'+(f'{t}'.replace(".template",f"-{fitted_lines[lines[temp]][1]}.fit"))
+        path = output_location+'/'+filename.split('/')[5][0:19]+'.'+(f'{t}'.replace(".template",f"-{fitted_lines[lines[temp]][1]}.fit"))
 
         if os.path.isfile(path) == False:
             cube = eispac.read_cube(filename, window=t.central_wave)
