@@ -42,10 +42,10 @@ data_location = '/mnt/scratch/data/spruksk2/data'
 #os.makedirs(data_location, exist_ok=True)
 #output_location = '/Users/dml/python_output/EIS_work/'+date
 output_location = '/mnt/scratch/data/spruksk2/python_output/EIS_work/'+date
-os.makedirs(output_location, exist_ok=True)
+os.makedirs(output_location, exist_ok= True
 
 #results = Fido.search(a.Time(timerange[0], timerange[1]),
-                    #  a.Instrument('EIS'),
+                    #  a.Instrument('EIS'),)
                     #  a.Physobs.intensity,
                     #  a.Source('Hinode'),
                     #  a.Provider('NRL'),
@@ -191,7 +191,7 @@ def fit_data(file,fitted_lines,line,product,output_location):
     if os.path.isfile(path) == False:
         template = eispac.read_template(eispac.data.get_fit_template_filepath(template_name))
         cube = eispac.read_cube(file, window=template.central_wave)
-        fit_res = eispac.fit_spectra(cube, template, ncpu='max')
+        fit_res = eispac.fit_spectra(cube, template, ncpu='10')
         save_filepaths = eispac.save_fit(fit_res, save_dir=output_location)
         print(save_filepaths)
     else:
@@ -447,10 +447,17 @@ for event in range(0, len(eis_evts)):
     f_eis.sort()
     
     for file in f_eis:
+        print(' ')
+        print(file)
+        print(' ')
 
         aia_map, hmi_map = get_context_img(img_time)
 
         for wvl in line_list:
+
+            print(' ')
+            print(wvl)
+            print(' ')
             i_map, fit_res = get_intensity(wvl,file,fitted_lines,output_location+'/save_files')
             v_map, fit_res = get_velocity(wvl,file,fitted_lines,output_location+'/save_files')
             w_map, fit_res = get_width(wvl,file,fitted_lines,output_location+'/save_files')
