@@ -207,6 +207,7 @@ def get_composition(linepair, filename, output_location, fitted_lines):
         lines=['ca_14_193','ar_14_194','Ca XIV-Ar XIV 1'] 
     else:
         print('No line database can be found. Add your line in code.')
+        return
         
 #    template_names=[fitted_lines[lines[0]][0],fitted_lines[lines[1]][0]]
 #    templates = [eispac.read_template(eispac.data.get_fit_template_filepath(t)) for t in template_names]
