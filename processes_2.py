@@ -161,7 +161,7 @@ def fit_data(file,fitted_lines,line,product,output_location):
     if os.path.isfile(path) == False:
         template = eispac.read_template(eispac.data.get_fit_template_filepath(template_name))
         cube = eispac.read_cube(file, window=template.central_wave)
-        fit_res = eispac.fit_spectra(cube, template, ncpu='20')
+        fit_res = eispac.fit_spectra(cube, template, ncpu='30')
         save_filepaths = eispac.save_fit(fit_res, save_dir=output_location)
         print(save_filepaths)
     else:
