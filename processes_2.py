@@ -264,7 +264,7 @@ def get_composition(linepair, filename, output_location, fitted_lines):
     m_comp = Map(m_upr.data/m_lwr.data, m_upr.meta)
     m_comp.meta['line_id'] = lines[2]
 
-    # ✅ Ensure the output directory exists before saving
+    # Ensure the output directory exists before saving
     save_dir = os.path.join(output_location, 'composition_files')
     os.makedirs(save_dir, exist_ok=True)  # Creates the directory if it doesn't exist
 
@@ -460,8 +460,8 @@ def plot_composition(linepair, comp, aia_map, hmi_map, output_location):
 
 def run_eis_processing():
 
-    eis_evts = ['20151018_102719']
-    time_range = ['2015/10/18T10:26:00', '2015/10/18T10:28:00']
+    eis_evts = ['20151018_173743']
+    time_range = ['2015/10/18T17:36:00', '2015/10/18T17:38:00']
     date = '20151018'
 
     timerange = [dt.datetime.strptime(tr,'%Y/%m/%dT%H:%M:%S') for tr in time_range]
@@ -497,8 +497,8 @@ def run_eis_processing():
 
 # %%
     #line_list = ["ar_14_194","ca_14_193"]#,"si_10_258","s_10_264"]#,"fe_12_195","fe_13_202","fe_13_203"]
-    #line_list = ["ar_14_194","ca_14_193"]#,"si_10_258","s_10_264"]#,"fe_12_195","fe_13_202","fe_13_203"]
-    line_list = ["ca_14_193"]#,"si_10_258","s_10_264"]#,"fe_12_195","fe_13_202","fe_13_203"]
+    line_list = ["ar_14_194","ca_14_193","si_10_258"]#"s_10_264"]#,"fe_12_195","fe_13_202","fe_13_203"]
+    #line_list = ["ca_14_193"]#,"si_10_258","s_10_264"]#,"fe_12_195","fe_13_202","fe_13_203"]
 
     for event in range(0, len(eis_evts)):
 
