@@ -551,9 +551,10 @@ def run_eis_processing():
 #           m_SiS = get_composition('SiS', file, output_location+'/save_files', fitted_lines)
 #           plot_composition('SiS', m_SiS, aia_map, hmi_map, output_location+'/plots')
            # m_CaAr = get_composition('CaAr', file, output_location, fitted_lines)
-            #plot_composition('CaAr', m_CaAr, aia_map, hmi_map, output_location+'/plots')
+            #plot_composition('CaAr', m_CaAr, aia_map, hmi_map, output_locationputty+'/plots')
             intensity_filename = output_location + '/intensity_files/eis_' + wvl + '_intensity.fits'
-            i_map.export_fits(intensity_filename)
+            sunpy_map = Map(i_map)
+            sunpy_map.save(intensity_filename)
  
 
 if __name__ == "__main__":
