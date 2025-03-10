@@ -157,7 +157,7 @@ def get_context_img(img_time):
 ###changed ncpu to 20 hopefully works
 def fit_data(file,fitted_lines,line,product,output_location):
     template_name = fitted_lines[f'{line}'][0]
-    path = output_location+'/'+file.split('/')[5][0:19]+'.'+(f'{template_name}'.replace(".template",f"-{fitted_lines[f'{line}'][1]}.fit"))
+    path = output_location+'/'+file.split('/')[6][0:19]+'.'+(f'{template_name}'.replace(".template",f"-{fitted_lines[f'{line}'][1]}.fit"))
     if os.path.isfile(path) == False:
         template = eispac.read_template(eispac.data.get_fit_template_filepath(template_name))
         cube = eispac.read_cube(file, window=template.central_wave)
@@ -184,7 +184,6 @@ def get_intensity(line,file,fitted_lines,output_location):
     timestamp = m.date.strftime("%Y%m%d_%H%M%S")
     output_filename = os.path.join(save_dir, f'eis_{timestamp}_intensity_{line}.fits')
     m.save(output_filename, overwrite=True)
-
     return m, fit_res
 
 # %% [markdown]
@@ -305,7 +304,6 @@ def plot_eis_fits(line, int, vel, wid, aia_map, output_location, fitted_lines):
     int.plot_settings['norm'] = norm
 
     int.plot(axes=ax1, title = 'a) Peak intensity', aspect=asp)
-    
     x = ax1.coords[0]
     x.set_axislabel(' ')
     x.set_ticklabel(exclude_overlapping=True)
