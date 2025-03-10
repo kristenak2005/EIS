@@ -177,7 +177,6 @@ def fit_data(file,fitted_lines,line,product,output_location):
 def get_intensity(line,file,fitted_lines,output_location):
     fit_res = fit_data(file,fitted_lines,line,'int',output_location) # Get fitdata
     m = fit_res.get_map(fitted_lines[f'{line}'][1],measurement='intensity') # From fitdata get map
-    return m, fit_res
 
     save_dir = os.path.join(output_location, 'intensity_files')
     os.makedirs(save_dir, exist_ok=True)
@@ -306,6 +305,7 @@ def plot_eis_fits(line, int, vel, wid, aia_map, output_location, fitted_lines):
     int.plot_settings['norm'] = norm
 
     int.plot(axes=ax1, title = 'a) Peak intensity', aspect=asp)
+    
     x = ax1.coords[0]
     x.set_axislabel(' ')
     x.set_ticklabel(exclude_overlapping=True)
@@ -506,7 +506,7 @@ def run_eis_processing():
 
 # %%
     #line_list = ["ar_14_194","ca_14_193"]#,"si_10_258","s_10_264"]#,"fe_12_195","fe_13_202","fe_13_203"]
-    line_list = ["ar_14_194","ca_14_193","si_10_258"]#"s_10_264"]#,"fe_12_195","fe_13_202","fe_13_203"]
+    line_list = ["fe_12_195", "ar_14_194","ca_14_193","si_10_258"]#"s_10_264"]#,"fe_12_195","fe_13_202","fe_13_203"]
     #line_list = ["ca_14_193"]#,"si_10_258","s_10_264"]#,"fe_12_195","fe_13_202","fe_13_203"]
 
     for event in range(0, len(eis_evts)):
@@ -550,11 +550,16 @@ def run_eis_processing():
          
 #           m_SiS = get_composition('SiS', file, output_location+'/save_files', fitted_lines)
 #           plot_composition('SiS', m_SiS, aia_map, hmi_map, output_location+'/plots')
-           # m_CaAr = get_composition('CaAr', file, output_location, fitted_lines)
+            #m_CaAr = get_composition('CaAr', file, output_location, fitted_lines)
             #plot_composition('CaAr', m_CaAr, aia_map, hmi_map, output_locationputty+'/plots')
-            intensity_filename = output_location + '/intensity_files/eis_' + wvl + '_intensity.fits'
+
+            # Save intensity map in FITS format (similar to CaAr)
+            intensity_filename = os.path.join(output_location, 'intensity_files', f'eis_{wvl}_intensity.fits')
+            i_map.save(intensity_filename, overwrite=True)
+
+            # Optional: Convert intensity map to SunPy map and save again
             sunpy_map = Map(i_map)
-            sunpy_map.save(intensity_filename)
+            sunpy_map.save(intensity_filename, overwrite=True)
  
 
 if __name__ == "__main__":
