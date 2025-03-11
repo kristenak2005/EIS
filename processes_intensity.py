@@ -383,8 +383,10 @@ def plot_eis_fits(line, int, vel, wid, aia_map, output_location, fitted_lines):
 
 # %%
 def plot_intensity(line, intensity_map, aia_map, hmi_map, output_location):
-    date = comp.date.strftime("%Y%m%d_%H%M%S")
-    if comp.dimensions[1]/comp.dimensions[0] >= 20:
+    #date = comp.date.strftime("%Y%m%d_%H%M%S")
+    date = intensity_map.date.strftime("%Y%m%d_%H%M%S")
+
+    if intensity_map.dimensions[1]/intensity_map.dimensions[0] >= 20:
         figs = (12,5)
         wid_rat = [1,3,3]
         asp = 1/4
@@ -396,7 +398,7 @@ def plot_intensity(line, intensity_map, aia_map, hmi_map, output_location):
     gs = gridspec.GridSpec(1,3,width_ratios=wid_rat)
     plt.rcParams['font.size'] = '10'
     # Intensity
-    ax1 = fig.add_subplot(gs[0,0], projection = comp, label = 'a)')
+    ax1 = fig.add_subplot(gs[0,0], projection = intensity_map, label = 'a)')
     norm = colors.Normalize(vmin=0, vmax=4)
     comp.plot_settings['norm'] = norm
     comp.plot_settings['cmap'] = 'RdYlBu'
