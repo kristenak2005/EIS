@@ -182,10 +182,10 @@ def get_intensity(line,file,fitted_lines,output_location):
     os.makedirs(save_dir, exist_ok=True)
   
     timestamp = m.date.strftime("%Y%m%d_%H%M%S")
-    output_filename = os.path.join(save_dir, f'eis_{timestamp}_intensity_{line}.fits')
+    output_filename = os.path.join(save_dir, f'eis_{m_comp.date.strftime("%Y%m%d_%H%M%S")}_intensity_{linepair}.fits')
     m.save(output_filename, overwrite=True)
     return m, fit_res
-
+ 
 # %% [markdown]
 # Define a function to get the Doppler velocity
 
