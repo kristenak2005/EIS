@@ -185,7 +185,31 @@ def get_intensity(line,file,fitted_lines,output_location):
     output_filename = os.path.join(save_dir, f'eis_{m_comp.date.strftime("%Y%m%d_%H%M%S")}_intensity_{linepair}.fits')
     m.save(output_filename, overwrite=True)
     return m, fit_res
- 
+    ########
+    f_upr = glob.glob(output_location+'/EIS_fit_'+lines[0]+'.asdf')
+    if not f_upr:
+        raise FileNotFoundError(f"Upper line file not found: {output_location+'/EIS_fit_'+lines[0]+'.asdf'}")
+    arrs_upr = asdf.open(f_upr[0])
+    m_upr = arrs_upr['int_map']
+
+    f_lwr = glob.glob(output_location+'/EIS_fit_'+lines[1]+'.asdf')
+    if not f_lwr:
+        raise FileNotFoundError(f"Lower line file not found: {output_location+'/EIS_fit_'+lines[1]+'.asdf'}")
+    arrs_lwr = asdf.open(f_lwr[0])
+    m_lwr = arrs_lwr['int_map']
+    
+
+    m_comp = Map(m_upr.data/m_lwr.data, m_upr.meta)
+    m_comp.meta['line_id'] = lines[2]
+
+    # Ensure the output directory exists before saving
+    save_dir = os.path.join(output_location, 'intensity_files')
+    os.makedirs(save_dir, exist_ok=True)  # Creates the directory if it doesn't exist
+
+    output_filename = os.path.join(save_dir, f'eis_{m_comp.date.strftime("%Y%m%d_%H%M%S")}_intensity_{linepair}.fits')
+
+    m_comp.save(output_filename, overwrite=True)
+    return m_comp
 # %% [markdown]
 # Define a function to get the Doppler velocity
 
