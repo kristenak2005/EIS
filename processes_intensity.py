@@ -380,6 +380,34 @@ def plot_eis_fits(line, int, vel, wid, aia_map, output_location, fitted_lines):
 # Define a function to get the composition line ratio
 
 # %%
+def plot_intensity(line, intensity_map, aia_map, hmi_map, output_location):
+    date = comp.date.strftime("%Y%m%d_%H%M%S")
+    if comp.dimensions[1]/comp.dimensions[0] >= 20:
+        figs = (12,5)
+        wid_rat = [1,3,3]
+        asp = 1/4
+    else:
+        figs = (12,6)
+        wid_rat = [1,2,2]
+        asp = 1/3
+    fig = plt.figure(constrained_layout=True, figsize=figs)
+    gs = gridspec.GridSpec(1,3,width_ratios=wid_rat)
+    plt.rcParams['font.size'] = '10'
+    # Intensity
+    ax1 = fig.add_subplot(gs[0,0], projection = comp, label = 'a)')
+    norm = colors.Normalize(vmin=0, vmax=4)
+    comp.plot_settings['norm'] = norm
+    comp.plot_settings['cmap'] = 'RdYlBu'
+    comp.plot(axes=ax1, title = 'a) '+title, aspect=asp)
+    x=ax1.coords[0]
+    x.set_ticklabel(exclude_overlapping=True)
+    plt.colorbar(location='right', label='')
+    
+    #fig, ax = plt.subplots(figsize=(6,5))
+    #intensity_map.plot(axes=ax, title=f'Intensity Map for {line}')
+   # plt.colorbar(ax=ax, location='right', label='Intensity')
+   # plt.savefig(os.path.join(output_location, f'intensity_map_{line}.png'))
+
 def plot_composition(linepair, comp, aia_map, hmi_map, output_location):
     date = comp.date.strftime("%Y%m%d_%H%M%S")
     if linepair == "SiS":
@@ -552,13 +580,14 @@ def run_eis_processing():
             #plot_composition('CaAr', m_CaAr, aia_map, hmi_map, output_locationputty+'/plots')
 
             # Save intensity map in FITS format (similar to CaAr)
-            intensity_filename = os.path.join(output_location, 'intensity_files', f'eis_{wvl}_intensity.fits')
-            i_map.save(intensity_filename, overwrite=True)
+            #intensity_filename = os.path.join(output_location, 'intensity_files', f'eis_{wvl}_intensity.fits')
+            #i_map.save(intensity_filename, overwrite=True)
 
             # Optional: Convert intensity map to SunPy map and save again
-            sunpy_map = Map(i_map)
-            sunpy_map.save(intensity_filename, overwrite=True)
- 
+            m_intensity = i_map
+            plot_intensity(wvl, m_intensity, aia_map, hmi_map, output_location+'/plots')
+            #plot_eis_fits(wvl, m_intensity, aia_map, hmi_map, output_location+ '/plots') 
+            
 
 if __name__ == "__main__":
     run_eis_processing()
