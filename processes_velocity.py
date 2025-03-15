@@ -470,7 +470,7 @@ def plot_intensity(linepair, intensity_map, aia_map, hmi_map, output_location):
     plt.savefig(output_location+'/EIS_Intensity_'+date+'_'+linepair+'.png', bbox_inches='tight')
     plt.close(fig)
 
-def plot_velocity(linepair, intensity_map, aia_map, hmi_map, output_location):
+def plot_velocity(linepair, velocity_map, aia_map, hmi_map, output_location):
     #date = comp.date.strftime("%Y%m%d_%H%M%S")
     date = velocity_map.date.strftime("%Y%m%d_%H%M%S")
     if linepair == "fe_12_195":
@@ -527,8 +527,8 @@ def plot_velocity(linepair, intensity_map, aia_map, hmi_map, output_location):
     y.set_axislabel_position('l')
 
 #Overplot the EIS FoV
-    bottom_left = intensity_map.bottom_left_coord
-    top_right = intensity_map.top_right_coord
+    bottom_left = width_map.bottom_left_coord
+    top_right = width_map.top_right_coord
     aia_map.draw_quadrangle(bottom_left, top_right=top_right, axes = ax2, edgecolor='blue') 
 
 # HMI context image
@@ -735,6 +735,8 @@ def run_eis_processing():
            
             m_velocity = v_map
             plot_velocity(wvl, m_velocity, aia_map, hmi_map, output_location+'/plots')
+
+            
             # Save intensity map in FITS format (similar to CaAr)
             #intensity_filename = os.path.join(output_location, 'intensity_files', f'eis_{wvl}_intensity.fits')
             #i_map.save(intensity_filename, overwrite=True)
