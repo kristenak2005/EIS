@@ -739,8 +739,8 @@ def run_eis_processing():
             plot_intensity(wvl, m_intensity, aia_map, hmi_map, output_location+'/plots')
             #plot_eis_fits(wvl, m_intensity, aia_map, hmi_map, output_location+ '/plots') 
             #Velocity mapping
-            m_velocity = v_map
-            plot_velocity(wvl, m_velocity, aia_map, hmi_map, output_location+'/plots')
+            #m_velocity = v_map
+            #plot_velocity(wvl, m_velocity, aia_map, hmi_map, output_location+'/plots')
 
 if __name__ == "__main__":
     run_eis_processing()
