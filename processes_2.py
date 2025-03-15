@@ -541,9 +541,12 @@ def run_eis_processing():
          
 #           m_SiS = get_composition('SiS', file, output_location+'/save_files', fitted_lines)
 #           plot_composition('SiS', m_SiS, aia_map, hmi_map, output_location+'/plots')
+
             m_CaAr = get_composition('CaAr', file, output_location, fitted_lines)
             plot_composition('CaAr', m_CaAr, aia_map, hmi_map, output_location+'/plots')
-
+            
+            m_intensity = get_intensity('intensity', file, output_location, fitted_lines)
+            plot_intensity('intensity', m_intensity, aia_map, hmi_map, output_location+'/plots')
 
 if __name__ == "__main__":
     run_eis_processing()
