@@ -195,6 +195,13 @@ def get_intensity(line,file,fitted_lines,output_location):
 def get_velocity(line,file,fitted_lines,output_location):
     fit_res = fit_data(file,fitted_lines,line,'vel',output_location)
     m = fit_res.get_map(component = fitted_lines[f'{line}'][1],measurement='velocity')
+
+    save_dir = os.path.join(output_location, 'velocity_files')
+    os.makedirs(save_dir, exist_ok=True)
+    timestamp = m.date.strftime("%Y%m%d_%H%M%S")
+    output_filename = os.path.join(save_dir, f'eis_{m.date.strftime("%Y%m%d_%H%M%S")}_velocity_{line}.fits')
+    m.save(output_filename, overwrite=True)
+    
     return m, fit_res
 
 # %% [markdown]
@@ -382,10 +389,14 @@ def plot_eis_fits(line, int, vel, wid, aia_map, output_location, fitted_lines):
 # Define a function to get the composition line ratio
 
 # %%
-def plot_intensity(line, intensity_map, aia_map, hmi_map, output_location):
+def plot_intensity(linepair, intensity_map, aia_map, hmi_map, output_location):
     #date = comp.date.strftime("%Y%m%d_%H%M%S")
     date = intensity_map.date.strftime("%Y%m%d_%H%M%S")
-
+    if line == "fe_12_195":
+        title = f"Intensity for {linepair} " + date
+    else:
+        title = f"Intensity for {linepair} " + date
+    
     if intensity_map.dimensions[1]/intensity_map.dimensions[0] >= 20:
         figs = (12,5)
         wid_rat = [1,3,3]
@@ -397,16 +408,152 @@ def plot_intensity(line, intensity_map, aia_map, hmi_map, output_location):
     fig = plt.figure(constrained_layout=True, figsize=figs)
     gs = gridspec.GridSpec(1,3,width_ratios=wid_rat)
     plt.rcParams['font.size'] = '10'
-    # Intensity
+# Intensity
     ax1 = fig.add_subplot(gs[0,0], projection = intensity_map, label = 'a)')
     norm = colors.Normalize(vmin=0, vmax=4)
-    comp.plot_settings['norm'] = norm
-    comp.plot_settings['cmap'] = 'RdYlBu'
-    comp.plot(axes=ax1, title = 'a) '+title, aspect=asp)
+    intensity_map.plot_settings['norm'] = norm
+    intensity_map.plot_settings['cmap'] = 'RdYlBu'
+    intensity_map.plot(axes=ax1, title = 'a) '+title, aspect=asp)
     x=ax1.coords[0]
     x.set_ticklabel(exclude_overlapping=True)
     plt.colorbar(location='right', label='')
+# Process the HMI and AIA context images
+    b_left = [intensity_map.bottom_left_coord.Tx-200*u.arcsec, intensity_map.bottom_left_coord.Ty-200*u.arcsec]
+    t_right = [intensity_map.top_right_coord.Tx+200*u.arcsec, intensity_map.top_right_coord.Ty+200*u.arcsec]
+
+    top_right = SkyCoord(t_right[0],  t_right[1], frame=aia_map.coordinate_frame)
+    bottom_left = SkyCoord(b_left[0], b_left[1], frame=aia_map.coordinate_frame)
+    aia_map = aia_map.submap(bottom_left, top_right=top_right)
+    hmi_map = hmi_map.submap(bottom_left, top_right=top_right)
+
+# AIA context image
+    ax2 = fig.add_subplot(gs[0,1], projection = aia_map, label='b)')
+
+    proc_img = enhance.mgn(aia_map.data, h=0.94, gamma_min=0, gamma_max=aia_map.data.max())
+    aia_map = Map(proc_img, aia_map.meta)
+
+    alpha = 0.01
+    lwr_bnd = np.percentile(aia_map.data, alpha)
+    upr_bnd = np.percentile(aia_map.data, 100-alpha)
+    norm = colors.Normalize(vmin=lwr_bnd, vmax=upr_bnd)
+    aia_map.plot_settings['norm'] = norm
+    aia_map.plot_settings['norm'] = norm
     
+    aia_map.plot(axes=ax2, title='b) AIA context')
+    y = ax2.coords[1]
+    y.set_axislabel(' ')
+    y.set_ticklabel_position('l')
+    y.set_axislabel_position('l')
+
+#Overplot the EIS FoV
+    bottom_left = intensity_map.bottom_left_coord
+    top_right = intensity_map.top_right_coord
+    aia_map.draw_quadrangle(bottom_left, top_right=top_right, axes = ax2, edgecolor='blue') 
+
+# HMI context image
+    ax3 = fig.add_subplot(gs[0,2], projection = hmi_map, label='c)')
+
+    norm = colors.Normalize(vmin=-200, vmax=200)
+    hmi_map.plot_settings['norm'] = norm
+    
+    hmi_map.plot(axes=ax3, title='c) HMI context')
+    y=ax3.coords[1]
+    y.set_axislabel(' ')
+    y.set_ticklabel_visible(False)
+
+
+#Overplot the EIS FoV
+    bottom_left = intensity_map.bottom_left_coord
+    top_right = intensity_map.top_right_coord
+    hmi_map.draw_quadrangle(bottom_left, top_right=top_right, axes = ax3, edgecolor='blue') 
+
+    plt.savefig(output_location+'/EIS_Intensity_'+date+'_'+linepair+'.png', bbox_inches='tight')
+    plt.close(fig)
+
+def plot_velocity(linepair, intensity_map, aia_map, hmi_map, output_location):
+    #date = comp.date.strftime("%Y%m%d_%H%M%S")
+    date = velocity_map.date.strftime("%Y%m%d_%H%M%S")
+    if linepair == "fe_12_195":
+        title = f"Intensity for {linepair} " + date
+    else:
+        title = f"Intensity for {linepair} " + date
+    
+    if velocity_map.dimensions[1]/velocity_map.dimensions[0] >= 20:
+        figs = (12,5)
+        wid_rat = [1,3,3]
+        asp = 1/4
+    else:
+        figs = (12,6)
+        wid_rat = [1,2,2]
+        asp = 1/3
+    fig = plt.figure(constrained_layout=True, figsize=figs)
+    gs = gridspec.GridSpec(1,3,width_ratios=wid_rat)
+    plt.rcParams['font.size'] = '10'
+# Velocity
+    ax1 = fig.add_subplot(gs[0,0], projection = intensity_map, label = 'a)')
+    norm = colors.Normalize(vmin=0, vmax=4)
+    velocity_map.plot_settings['norm'] = norm
+    velocity_map.plot_settings['cmap'] = 'RdYlBu'
+    velocity_map.plot(axes=ax1, title = 'a) '+title, aspect=asp)
+    x=ax1.coords[0]
+    x.set_ticklabel(exclude_overlapping=True)
+    plt.colorbar(location='right', label='')
+# Process the HMI and AIA context images
+    b_left = [velocity_map.bottom_left_coord.Tx-200*u.arcsec, velocity_map.bottom_left_coord.Ty-200*u.arcsec]
+    t_right = [velocity_map.top_right_coord.Tx+200*u.arcsec, velocity_map.top_right_coord.Ty+200*u.arcsec]
+
+    top_right = SkyCoord(t_right[0],  t_right[1], frame=aia_map.coordinate_frame)
+    bottom_left = SkyCoord(b_left[0], b_left[1], frame=aia_map.coordinate_frame)
+    aia_map = aia_map.submap(bottom_left, top_right=top_right)
+    hmi_map = hmi_map.submap(bottom_left, top_right=top_right)
+
+# AIA context image
+    ax2 = fig.add_subplot(gs[0,1], projection = aia_map, label='b)')
+
+    proc_img = enhance.mgn(aia_map.data, h=0.94, gamma_min=0, gamma_max=aia_map.data.max())
+    aia_map = Map(proc_img, aia_map.meta)
+
+    alpha = 0.01
+    lwr_bnd = np.percentile(aia_map.data, alpha)
+    upr_bnd = np.percentile(aia_map.data, 100-alpha)
+    norm = colors.Normalize(vmin=lwr_bnd, vmax=upr_bnd)
+    aia_map.plot_settings['norm'] = norm
+    aia_map.plot_settings['norm'] = norm
+    
+    aia_map.plot(axes=ax2, title='b) AIA context')
+    y = ax2.coords[1]
+    y.set_axislabel(' ')
+    y.set_ticklabel_position('l')
+    y.set_axislabel_position('l')
+
+#Overplot the EIS FoV
+    bottom_left = intensity_map.bottom_left_coord
+    top_right = intensity_map.top_right_coord
+    aia_map.draw_quadrangle(bottom_left, top_right=top_right, axes = ax2, edgecolor='blue') 
+
+# HMI context image
+    ax3 = fig.add_subplot(gs[0,2], projection = hmi_map, label='c)')
+
+    norm = colors.Normalize(vmin=-200, vmax=200)
+    hmi_map.plot_settings['norm'] = norm
+    
+    hmi_map.plot(axes=ax3, title='c) HMI context')
+    y=ax3.coords[1]
+    y.set_axislabel(' ')
+    y.set_ticklabel_visible(False)
+
+
+#Overplot the EIS FoV
+    bottom_left = velocity_map.bottom_left_coord
+    top_right = velocity_map.top_right_coord
+    hmi_map.draw_quadrangle(bottom_left, top_right=top_right, axes = ax3, edgecolor='blue') 
+
+    plt.savefig(output_location+'/EIS_Velocity_'+date+'_'+linepair+'.png', bbox_inches='tight')
+    plt.close(fig)
+
+# %% [markdown]
+# Use the previously defined functions to process and plot the data
+
     #fig, ax = plt.subplots(figsize=(6,5))
     #intensity_map.plot(axes=ax, title=f'Intensity Map for {line}')
    # plt.colorbar(ax=ax, location='right', label='Intensity')
@@ -587,11 +734,13 @@ def run_eis_processing():
             #intensity_filename = os.path.join(output_location, 'intensity_files', f'eis_{wvl}_intensity.fits')
             #i_map.save(intensity_filename, overwrite=True)
 
-            # Optional: Convert intensity map to SunPy map and save again
+            #Intensity mapping .............................
             m_intensity = i_map
             plot_intensity(wvl, m_intensity, aia_map, hmi_map, output_location+'/plots')
             #plot_eis_fits(wvl, m_intensity, aia_map, hmi_map, output_location+ '/plots') 
-            
+            #Velocity mapping
+            m_velocity = v_map
+            plot_velocity(wvl, m_velocity, aia_map, hmi_map, output_location+'/plots')
 
 if __name__ == "__main__":
     run_eis_processing()
