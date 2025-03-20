@@ -409,14 +409,26 @@ def plot_intensity(linepair, intensity_map, aia_map, hmi_map, output_location):
     gs = gridspec.GridSpec(1,3,width_ratios=wid_rat)
     plt.rcParams['font.size'] = '10'
 # Intensity
+    #ax1 = fig.add_subplot(gs[0,0], projection = intensity_map, label = 'a)')
+    #norm = colors.Normalize(vmin=0, vmax=4) #percentilen 
+    #intensity_map.plot_settings['norm'] = norm
+    #intensity_map.plot_settings['cmap'] = 'RdYlBu'
+    #intensity_map.plot(axes=ax1, title = 'a) '+title, aspect=asp)
+    #x=ax1.coords[0]
+    #x.set_ticklabel(exclude_overlapping=True)
+    #plt.colorbar(location='right', label='')
+    alpha = 0.1
     ax1 = fig.add_subplot(gs[0,0], projection = intensity_map, label = 'a)')
-    norm = colors.Normalize(vmin=0, vmax=4)
+    lwr_bnd = np.percentile(intensity_map.data, alpha)
+    upr_bnd = np.percentile(intensity_map.data, 100-alpha)
+    norm = colors.Normalize(vmin=lwr_bnd, vmax=upr_bnd)
     intensity_map.plot_settings['norm'] = norm
-    intensity_map.plot_settings['cmap'] = 'RdYlBu'
-    intensity_map.plot(axes=ax1, title = 'a) '+title, aspect=asp)
-    x=ax1.coords[0]
+    intensity_map.plot(axes=ax1, title = 'a) Peak intensity', aspect=asp)
+    x = ax1.coords[0]
+    x.set_axislabel(' ')
     x.set_ticklabel(exclude_overlapping=True)
-    plt.colorbar(location='right', label='')
+    plt.colorbar(ax=ax1,location='right', label='')
+
 # Process the HMI and AIA context images
     b_left = [intensity_map.bottom_left_coord.Tx-200*u.arcsec, intensity_map.bottom_left_coord.Ty-200*u.arcsec]
     t_right = [intensity_map.top_right_coord.Tx+200*u.arcsec, intensity_map.top_right_coord.Ty+200*u.arcsec]
@@ -491,7 +503,7 @@ def plot_velocity(linepair, intensity_map, aia_map, hmi_map, output_location):
     plt.rcParams['font.size'] = '10'
 # Velocity
     ax1 = fig.add_subplot(gs[0,0], projection = intensity_map, label = 'a)')
-    norm = colors.Normalize(vmin=0, vmax=4)
+    norm = colors.Normalize(vmin=-15, vmax=15)
     velocity_map.plot_settings['norm'] = norm
     velocity_map.plot_settings['cmap'] = 'RdYlBu'
     velocity_map.plot(axes=ax1, title = 'a) '+title, aspect=asp)
