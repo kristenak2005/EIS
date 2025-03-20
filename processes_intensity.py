@@ -408,6 +408,7 @@ def plot_intensity(linepair, intensity_map, aia_map, hmi_map, output_location):
     fig = plt.figure(constrained_layout=True, figsize=figs)
     gs = gridspec.GridSpec(1,3,width_ratios=wid_rat)
     plt.rcParams['font.size'] = '10'
+
 # Intensity
     #ax1 = fig.add_subplot(gs[0,0], projection = intensity_map, label = 'a)')
     #norm = colors.Normalize(vmin=0, vmax=4) #percentilen 
