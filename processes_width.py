@@ -586,7 +586,7 @@ def plot_width(linepair, width_map, aia_map, hmi_map, output_location):
     plt.rcParams['font.size'] = '10'
 # Width
     ax1 = fig.add_subplot(gs[0,0], projection = width_map, label = 'a)')
-    norm = colors.Normalize(vmin=0, vmax=4)
+    norm = colors.Normalize(vmin=0, vmax=0.04)
     width_map.plot_settings['norm'] = norm
     width_map.plot_settings['cmap'] = 'RdYlBu'
     width_map.plot(axes=ax1, title = 'a) '+title, aspect=asp)
