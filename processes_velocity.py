@@ -490,14 +490,24 @@ def plot_velocity(linepair, velocity_map, aia_map, hmi_map, output_location):
     gs = gridspec.GridSpec(1,3,width_ratios=wid_rat)
     plt.rcParams['font.size'] = '10'
 # Velocity
-    ax1 = fig.add_subplot(gs[0,0], projection = intensity_map, label = 'a)')
-    norm = colors.Normalize(vmin=0, vmax=4)
-    velocity_map.plot_settings['norm'] = norm
-    velocity_map.plot_settings['cmap'] = 'RdYlBu'
-    velocity_map.plot(axes=ax1, title = 'a) '+title, aspect=asp)
-    x=ax1.coords[0]
-    x.set_ticklabel(exclude_overlapping=True)
-    plt.colorbar(location='right', label='')
+    ax1 = fig.add_subplot(gs[0,1], projection = velocity_map, label='a)')
+    velocity_map.plot_settings['norm'].vmin = -15
+    velocity_map.plot_settings['norm'].vmax = 15
+    velocity_map.plot(axes=ax1, title='a) Doppler Velocity', aspect=asp)
+    x = ax1.coords[0]
+    x.set_tickllabel(exclude_overlapping=True)
+    y = ax1.coords[1]
+    y.set_ticklabel_visible(False)
+    plt.colorbar(ax=ax1, location='right', label='')
+    
+    #ax1 = fig.add_subplot(gs[0,0], projection = intensity_map, label = 'a)')
+    #norm = colors.Normalize(vmin=0, vmax=4)
+    #velocity_map.plot_settings['norm'] = norm
+    #velocity_map.plot_settings['cmap'] = 'RdYlBu'
+    #velocity_map.plot(axes=ax1, title = 'a) '+title, aspect=asp)
+    #x=ax1.coords[0]
+    #x.set_ticklabel(exclude_overlapping=True)
+    #plt.colorbar(location='right', label='')
 # Process the HMI and AIA context images
     b_left = [velocity_map.bottom_left_coord.Tx-200*u.arcsec, velocity_map.bottom_left_coord.Ty-200*u.arcsec]
     t_right = [velocity_map.top_right_coord.Tx+200*u.arcsec, velocity_map.top_right_coord.Ty+200*u.arcsec]
