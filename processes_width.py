@@ -585,14 +585,31 @@ def plot_width(linepair, width_map, aia_map, hmi_map, output_location):
     gs = gridspec.GridSpec(1,3,width_ratios=wid_rat)
     plt.rcParams['font.size'] = '10'
 # Width
-    ax1 = fig.add_subplot(gs[0,0], projection = width_map, label = 'a)')
-    norm = colors.Normalize(vmin=0, vmax=0.04)
+    alpha = 0.1
+    ax1 = fig.add_subplot(gs[0,0], projection =width_map, label='a)')
+    #lwr_bnd = np.percentile(width_map.data, alpha)
+    #upr_bnd np.percentile(width_map.data, 100-alpha)
+    lwr_bnd = 0
+    upr_bnd = 0.4
+    norm = colors.Normalize(vmin=lwr_bnd, vmax=upr_bnd)
     width_map.plot_settings['norm'] = norm
-    width_map.plot_settings['cmap'] = 'RdYlBu'
-    width_map.plot(axes=ax1, title = 'a) '+title, aspect=asp)
-    x=ax1.coords[0]
+    width_map.plot(axes=ax1, title='a) Line width', aspect=asp)
+    x = ax1.coords[0]
+    x.set_axislabel(' ')
     x.set_ticklabel(exclude_overlapping=True)
-    plt.colorbar(location='right', label='')
+    y = ax1.coords[1]
+    y.set_ticklabel_visible(False)
+    plt.colorbar(ax=ax1, location='right', label='')
+
+    
+    #ax1 = fig.add_subplot(gs[0,0], projection = width_map, label = 'a)')
+    #norm = colors.Normalize(vmin=0, vmax=0.04)
+    #width_map.plot_settings['norm'] = norm
+    #width_map.plot_settings['cmap'] = 'RdYlBu'
+    #width_map.plot(axes=ax1, title = 'a) '+title, aspect=asp)
+    #x=ax1.coords[0]
+    #x.set_ticklabel(exclude_overlapping=True)
+    #plt.colorbar(location='right', label='')
 # Process the HMI and AIA context images
     b_left = [velocity_map.bottom_left_coord.Tx-200*u.arcsec, velocity_map.bottom_left_coord.Ty-200*u.arcsec]
     t_right = [velocity_map.top_right_coord.Tx+200*u.arcsec, velocity_map.top_right_coord.Ty+200*u.arcsec]
