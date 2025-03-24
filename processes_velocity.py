@@ -490,7 +490,7 @@ def plot_velocity(linepair, velocity_map, aia_map, hmi_map, output_location):
     gs = gridspec.GridSpec(1,3,width_ratios=wid_rat)
     plt.rcParams['font.size'] = '10'
 # Velocity
-    ax1 = fig.add_subplot(gs[0,1], projection = velocity_map, label='a)')
+    ax1 = fig.add_subplot(gs[0,0], projection = velocity_map, label='a)')
     velocity_map.plot_settings['norm'].vmin = -15
     velocity_map.plot_settings['norm'].vmax = 15
     velocity_map.plot(axes=ax1, title='a) Doppler Velocity', aspect=asp)
