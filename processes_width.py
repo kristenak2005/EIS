@@ -209,10 +209,10 @@ def get_velocity(line,file,fitted_lines,output_location):
 
 # %%
 def get_width(line,file,fitted_lines,output_location):
-    fit_res = fit_data(file,fitted_lines,line,'vel',output_location)
+    fit_res = fit_data(file,fitted_lines,line,'wid',output_location)
     m = fit_res.get_map(component = fitted_lines[f'{line}'][1],measurement='width')
 
-    save_dir = os.path.join(output_location, 'velocity_files')
+    save_dir = os.path.join(output_location, 'width_files')
     os.makedirs(save_dir, exist_ok=True)
     timestamp = m.date.strftime("%Y%m%d_%H%M%S")
     output_filename = os.path.join(save_dir, f'eis_{m.date.strftime("%Y%m%d_%H%M%S")}_width_{line}.fits')
@@ -819,7 +819,7 @@ def run_eis_processing():
                 print(wvl)
                 print(' ')
 
-                i_map, fit_res = get_iFntensity(wvl,file,fitted_lines,output_location+'/save_files')
+                i_map, fit_res = get_intensity(wvl,file,fitted_lines,output_location+'/save_files')
                 v_map, fit_res = get_velocity(wvl,file,fitted_lines,output_location+'/save_files')
                 w_map, fit_res = get_width(wvl,file,fitted_lines,output_location+'/save_files')
                 plot_eis_fits(wvl, i_map, v_map, w_map, aia_map, output_location+'/plots', fitted_lines)
