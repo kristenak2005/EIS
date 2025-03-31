@@ -611,8 +611,8 @@ def plot_width(linepair, width_map, aia_map, hmi_map, output_location):
     #x.set_ticklabel(exclude_overlapping=True)
     #plt.colorbar(location='right', label='')
 # Process the HMI and AIA context images
-    b_left = [velocity_map.bottom_left_coord.Tx-200*u.arcsec, velocity_map.bottom_left_coord.Ty-200*u.arcsec]
-    t_right = [velocity_map.top_right_coord.Tx+200*u.arcsec, velocity_map.top_right_coord.Ty+200*u.arcsec]
+    b_left = [width_map.bottom_left_coord.Tx-200*u.arcsec, width_map.bottom_left_coord.Ty-200*u.arcsec]
+    t_right = [width_map.top_right_coord.Tx+200*u.arcsec, width_map.top_right_coord.Ty+200*u.arcsec]
 
     top_right = SkyCoord(t_right[0],  t_right[1], frame=aia_map.coordinate_frame)
     bottom_left = SkyCoord(b_left[0], b_left[1], frame=aia_map.coordinate_frame)
@@ -639,8 +639,8 @@ def plot_width(linepair, width_map, aia_map, hmi_map, output_location):
     y.set_axislabel_position('l')
 
 #Overplot the EIS FoV
-    bottom_left = intensity_map.bottom_left_coord
-    top_right = intensity_map.top_right_coord
+    bottom_left = width_map.bottom_left_coord
+    top_right = width_map.top_right_coord
     aia_map.draw_quadrangle(bottom_left, top_right=top_right, axes = ax2, edgecolor='blue') 
 
 # HMI context image
@@ -656,11 +656,11 @@ def plot_width(linepair, width_map, aia_map, hmi_map, output_location):
 
 
 #Overplot the EIS FoV
-    bottom_left = velocity_map.bottom_left_coord
-    top_right = velocity_map.top_right_coord
+    bottom_left = width_map.bottom_left_coord
+    top_right = width_map.top_right_coord
     hmi_map.draw_quadrangle(bottom_left, top_right=top_right, axes = ax3, edgecolor='blue') 
 
-    plt.savefig(output_location+'/EIS_Velocity_'+date+'_'+linepair+'.png', bbox_inches='tight')
+    plt.savefig(output_location+'/EIS_Width_'+date+'_'+linepair+'.png', bbox_inches='tight')
     plt.close(fig)
 
 def plot_composition(linepair, comp, aia_map, hmi_map, output_location):
@@ -819,7 +819,7 @@ def run_eis_processing():
                 print(wvl)
                 print(' ')
 
-                i_map, fit_res = get_intensity(wvl,file,fitted_lines,output_location+'/save_files')
+                i_map, fit_res = get_iFntensity(wvl,file,fitted_lines,output_location+'/save_files')
                 v_map, fit_res = get_velocity(wvl,file,fitted_lines,output_location+'/save_files')
                 w_map, fit_res = get_width(wvl,file,fitted_lines,output_location+'/save_files')
                 plot_eis_fits(wvl, i_map, v_map, w_map, aia_map, output_location+'/plots', fitted_lines)
