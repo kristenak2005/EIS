@@ -19,6 +19,12 @@ i_map11 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_030043
 i_map12 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_043942/save_files/intensity_files/eis_20151019_043942_intensity_fe_12_195.fits")
 i_map13 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_061712/save_files/intensity_files/eis_20151019_061712_intensity_fe_12_195.fits")
 i_map14 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_075442/save_files/intensity_files/eis_20151019_075442_intensity_fe_12_195.fits")
+i_map15 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_093012/save_files/intensity_files/eis_20151019_093012_intensity_fe_12_195.fits")
+i_map16 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_105442/save_files/intensity_files/eis_20151019_105442_intensity_fe_12_195.fits")
+i_map17 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_120542/save_files/intensity_files/eis_20151019_120542_intensity_fe_12_195.fits")
+i_map18 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_131642/save_files/intensity_files/eis_20151019_131642_intensity_fe_12_195.fits")
+i_map19 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_144842/save_files/intensity_files/eis_20151019_144842_intensity_fe_12_195.fits")
+i_map20 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_163612/save_files/intensity_files/eis_20151019_163612_intensity_fe_12_195.fits")
 
 
 
@@ -73,6 +79,30 @@ i_smap13 = i_map13.submap(SkyCoord(*bottom_left, frame=i_map13.coordinate_frame)
 i_smap14 = i_map14.submap(SkyCoord(*bottom_left, frame=i_map14.coordinate_frame),
                       top_right=SkyCoord(*top_right, frame=i_map14.coordinate_frame))
 
+i_smap15 = i_map15.submap(SkyCoord(*bottom_left, frame=i_map15.coordinate_frame),
+                      top_right=SkyCoord(*top_right, frame=i_map15.coordinate_frame))
+
+
+i_smap16 = i_map16.submap(SkyCoord(*bottom_left, frame=i_map16.coordinate_frame),
+                      top_right=SkyCoord(*top_right, frame=i_map16.coordinate_frame))
+
+
+i_smap17 = i_map17.submap(SkyCoord(*bottom_left, frame=i_map17.coordinate_frame),
+                      top_right=SkyCoord(*top_right, frame=i_map17.coordinate_frame))
+
+
+i_smap18 = i_map18.submap(SkyCoord(*bottom_left, frame=i_map18.coordinate_frame),
+                      top_right=SkyCoord(*top_right, frame=i_map18.coordinate_frame))
+
+
+i_smap19 = i_map19.submap(SkyCoord(*bottom_left, frame=i_map19.coordinate_frame),
+                      top_right=SkyCoord(*top_right, frame=i_map19.coordinate_frame))
+
+i_smap20 = i_map20.submap(SkyCoord(*bottom_left, frame=i_map20.coordinate_frame),
+                      top_right=SkyCoord(*top_right, frame=i_map20.coordinate_frame))
+
+
+
 
 
 
@@ -93,6 +123,13 @@ i_map11.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=11
 i_map12.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=12, autoalign=True, cmap='RdYlBu')
 i_map13.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=13, autoalign=True, cmap='RdYlBu')
 i_map14.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=14, autoalign=True, cmap='RdYlBu')
+i_map15.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=14, autoalign=True, cmap='RdYlBu')
+i_map16.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=14, autoalign=True, cmap='RdYlBu')
+i_map17.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=14, autoalign=True, cmap='RdYlBu')
+i_map18.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=14, autoalign=True, cmap='RdYlBu')
+i_map19.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=14, autoalign=True, cmap='RdYlBu')
+i_map20.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=14, autoalign=True, cmap='RdYlBu')
+
 
 aspect_ratio = i_map.meta['cdelt2'] / i_map.meta['cdelt1']
 ax.set_aspect(aspect_ratio)
