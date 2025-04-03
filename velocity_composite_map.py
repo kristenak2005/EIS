@@ -14,6 +14,17 @@ i_map6 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151018_191443/
 i_map7 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151018_205143/save_files/velocity_files/eis_20151018_205143_velocity_fe_12_195.fits")
 i_map8 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151018_222743/save_files/velocity_files/eis_20151018_222743_velocity_fe_12_195.fits")
 i_map9 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151018_235413/save_files/velocity_files/eis_20151018_235413_velocity_fe_12_195.fits")
+i_map10 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_012613/save_files/velocity_files/eis_20151019_012613_velocity_fe_12_195.fits")
+i_map11 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_030043/save_files/velocity_files/eis_20151019_030043_velocity_fe_12_195.fits")
+i_map12 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_043942/save_files/velocity_files/eis_20151019_043942_velocity_fe_12_195.fits")
+i_map13 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_061712/save_files/velocity_files/eis_20151019_061712_velocity_fe_12_195.fits")
+i_map14 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_075442/save_files/velocity_files/eis_20151019_075442_velocity_fe_12_195.fits")
+i_map15 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_093012/save_files/velocity_files/eis_20151019_093012_velocity_fe_12_195.fits")
+i_map16 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_105442/save_files/velocity_files/eis_20151019_105442_velocity_fe_12_195.fits")
+i_map17 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_120542/save_files/velocity_files/eis_20151019_120542_velocity_fe_12_195.fits")
+i_map18 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_131642/save_files/velocity_files/eis_20151019_131642_velocity_fe_12_195.fits")
+i_map19 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_144842/save_files/velocity_files/eis_20151019_144842_velocity_fe_12_195.fits")
+i_map20 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_163612/save_files/velocity_files/eis_20151019_163612_velocity_fe_12_195.fits")
 
 
 
@@ -54,20 +65,44 @@ i_smap8 = i_map8.submap(SkyCoord(*bottom_left, frame=i_map8.coordinate_frame),
 i_smap9 = i_map9.submap(SkyCoord(*bottom_left, frame=i_map9.coordinate_frame),
                       top_right=SkyCoord(*top_right, frame=i_map9.coordinate_frame))
 
+i_sma10 = i_map10.submap(SkyCoord(*bottom_left, frame=i_map10.coordinate_frame),
+                      top_right=SkyCoord(*top_right, frame=i_map10.coordinate_frame))
+
+i_smap11 = i_map11.submap(SkyCoord(*bottom_left, frame=i_map11.coordinate_frame),
+                      top_right=SkyCoord(*top_right, frame=i_map11.coordinate_frame))
+
+i_smap12 = i_map12.submap(SkyCoord(*bottom_left, frame=i_map12.coordinate_frame),
+                      top_right=SkyCoord(*top_right, frame=i_map12.coordinate_frame))
+
+i_smap13 = i_map13.submap(SkyCoord(*bottom_left, frame=i_map13.coordinate_frame),
+                      top_right=SkyCoord(*top_right, frame=i_map13.coordinate_frame))
+
+i_smap14 = i_map14.submap(SkyCoord(*bottom_left, frame=i_map14.coordinate_frame),
+                      top_right=SkyCoord(*top_right, frame=i_map14.coordinate_frame))
+
+i_smap15 = i_map15.submap(SkyCoord(*bottom_left, frame=i_map15.coordinate_frame),
+                      top_right=SkyCoord(*top_right, frame=i_map15.coordinate_frame))
+
+i_smap16 = i_map16.submap(SkyCoord(*bottom_left, frame=i_map16.coordinate_frame),
+                      top_right=SkyCoord(*top_right, frame=i_map16.coordinate_frame))
+
+i_smap17 = i_map17.submap(SkyCoord(*bottom_left, frame=i_map17.coordinate_frame),
+                      top_right=SkyCoord(*top_right, frame=i_map17.coordinate_frame))
+
 
 
 
 fig = plt.figure()
 ax = fig.add_subplot(projection=i_map)
-i_map.plot(axes=ax, clip_interval=(1, 99.9) * u.percent, zorder=0)
-i_map1.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=1)
-i_map2.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=2)
-i_map3.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=3)
-i_map4.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=4)
-i_map5.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=5)
-i_map6.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=6)
-i_map7.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=7)
-i_map8.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=8)
-i_map9.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=9)
+i_map.plot(axes=ax, clip_interval=(1, 99.9) * u.percent, zorder=0, autoalign=True, cmap='RdYlBu'))
+i_map1.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=1, autoalign=True)
+i_map2.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=2, autoalign=True)
+i_map3.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=3, autoalign=True)
+i_map4.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=4, autoalign=True)
+i_map5.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=5, autoalign=True)
+i_map6.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=6, autoalign=True)
+i_map7.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=7, autoalign=True)
+i_map8.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=8, autoalign=True)
+i_map9.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=9, autoalign=True)
 ax.set_title("EIS Velocity Composite Map")
 plt.show()
