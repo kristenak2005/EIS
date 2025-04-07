@@ -209,7 +209,7 @@ def get_velocity(line,file,fitted_lines,output_location):
 
 # %%
 def get_width(line,file,fitted_lines,output_location):
-    fit_res = fit_data(file,fitted_lines,line,'wid',output_location)
+    fit_res = fit_data(file,fitted_lines,line,'vel',output_location)
     m = fit_res.get_map(component = fitted_lines[f'{line}'][1],measurement='width')
 
     save_dir = os.path.join(output_location, 'width_files')
