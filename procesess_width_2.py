@@ -169,22 +169,6 @@ def fit_data(file,fitted_lines,line,product,output_location):
 
     fit_res.fit[f'{product}'] = fit_res.shift2wave(fit_res.fit[f'{product}'],wave=195.119)
     return fit_res
-# %%
-###changed ncpu to 20 hopefully works
-def fit_data(file,fitted_lines,line,product,output_location):
-    template_name = fitted_lines[f'{line}'][0]
-    path = output_location+'/'+file.split('/')[6][0:19]+'.'+(f'{template_name}'.replace(".template",f"-{fitted_lines[f'{line}'][1]}.fit"))
-    if os.path.isfile(path) == False:
-        template = eispac.read_template(eispac.data.get_fit_template_filepath(template_name))
-        cube = eispac.read_cube(file, window=template.central_wave)
-        fit_res = eispac.fit_spectra(cube, template, ncpu='30')
-        save_filepaths = eispac.save_fit(fit_res, save_dir=output_location)
-        print(save_filepaths)
-    else:
-        fit_res=eispac.read_fit(path)
-
-    fit_res.fit[f'{product}'] = fit_res.shift2wave(fit_res.fit[f'{product}'],wave=195.119)
-    return fit_res
 
 # %% [markdown]
 # Define a function to get the line intensity
