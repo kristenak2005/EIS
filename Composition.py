@@ -122,7 +122,6 @@ i_map18.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=9,
 i_map19.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=9, autoalign=True, cmap='RdYlBu')
 i_map20.plot(axes=ax, clip_interval=(1, 99.97) * u.percent, alpha=0.7, zorder=9, autoalign=True, cmap='RdYlBu')
 
-
 aspect_ratio = i_map.meta['cdelt2'] / i_map.meta['cdelt1']
 ax.set_aspect(aspect_ratio)
 
