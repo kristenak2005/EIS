@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import astropy.units as u
 from sunpy.map import Map
 from astropy.coordinates import SkyCoord
-
+import matplotlib.colors as colors
 
 i_map = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151018_102719/save_files/intensity_files/eis_20151018_102719_intensity_fe_12_195.fits")   
 i_map1 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151018_113839/save_files/intensity_files/eis_20151018_113839_intensity_fe_12_195.fits") 
@@ -104,32 +104,36 @@ top_right = [1000, -200] * u.arcsec
 
 
 min_value = 0
-max_value = 100
+max_value = 500
 
 
 fig = plt.figure()
 ax = fig.add_subplot(projection=i_map)
-i_map.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, zorder=0,autoalign=True, cmap='RdYlBu')
-i_map1.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=1, autoalign=True, cmap='RdYlBu')
-i_map2.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=2, autoalign=True, cmap='RdYlBu')
-i_map3.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=3, autoalign=True, cmap='RdYlBu')
-i_map4.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=4, autoalign=True, cmap='RdYlBu')
-i_map5.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=5, autoalign=True, cmap='RdYlBu')
-i_map6.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=6, autoalign=True, cmap='RdYlBu')
-i_map7.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=7, autoalign=True, cmap='RdYlBu')
-i_map8.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=8, autoalign=True, cmap='RdYlBu')
-i_map9.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=9, autoalign=True, cmap='RdYlBu')
-i_map10.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=10, autoalign=True, cmap='RdYlBu')
-i_map11.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=11, autoalign=True, cmap='RdYlBu')
-i_map12.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=12, autoalign=True, cmap='RdYlBu')
-i_map13.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=13, autoalign=True, cmap='RdYlBu')
-i_map14.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=14, autoalign=True, cmap='RdYlBu')
-i_map15.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=14, autoalign=True, cmap='RdYlBu')
-i_map16.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=14, autoalign=True, cmap='RdYlBu')
-i_map17.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=14, autoalign=True, cmap='RdYlBu')
-i_map18.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=14, autoalign=True, cmap='RdYlBu')
-i_map19.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=14, autoalign=True, cmap='RdYlBu')
-i_map20.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=14, autoalign=True, cmap='RdYlBu')
+norm = colors.Normalize(vmin = min_value, vmax = max_value)
+
+i_map.plot(axes=ax, norm =norm, zorder=0,autoalign=True, cmap='OrRd')
+i_map1.plot(axes=ax, norm =norm, alpha=0.7, zorder=1, autoalign=True, cmap='OrRd')
+i_map2.plot(axes=ax, norm =norm, alpha=0.7, zorder=2, autoalign=True, cmap='OrRd')
+i_map3.plot(axes=ax, norm =norm, alpha=0.7, zorder=3, autoalign=True, cmap='OrRd')
+i_map4.plot(axes=ax, norm =norm, alpha=0.7, zorder=4, autoalign=True, cmap='OrRd')
+i_map5.plot(axes=ax, norm =norm, alpha=0.7, zorder=5, autoalign=True, cmap='OrRd')
+i_map6.plot(axes=ax, norm =norm, alpha=0.7, zorder=6, autoalign=True, cmap='OrRd')
+i_map7.plot(axes=ax, norm =norm, alpha=0.7, zorder=7, autoalign=True, cmap='OrRd')
+i_map8.plot(axes=ax, norm =norm, alpha=0.7, zorder=8, autoalign=True, cmap='OrRd')
+i_map9.plot(axes=ax, norm =norm, alpha=0.7, zorder=9, autoalign=True, cmap='OrRd')
+i_map10.plot(axes=ax, norm =norm, alpha=0.7, zorder=10, autoalign=True, cmap='OrRd')
+i_map11.plot(axes=ax, norm =norm, alpha=0.7, zorder=11, autoalign=True, cmap='OrRd')
+i_map11.plot(axes=ax, norm =norm, alpha=0.7, zorder=11, autoalign=True, cmap='OrRd')
+i_map11.plot(axes=ax, norm =norm, alpha=0.7, zorder=11, autoalign=True, cmap='OrRd')
+i_map12.plot(axes=ax, norm =norm, alpha=0.7, zorder=12, autoalign=True, cmap='OrRd')
+i_map13.plot(axes=ax, norm =norm, alpha=0.7, zorder=13, autoalign=True, cmap='OrRd')
+i_map14.plot(axes=ax, norm =norm, alpha=0.7, zorder=14, autoalign=True, cmap='OrRd')
+i_map15.plot(axes=ax, norm =norm, alpha=0.7, zorder=14, autoalign=True, cmap='OrRd')
+i_map16.plot(axes=ax, norm =norm, alpha=0.7, zorder=14, autoalign=True, cmap='OrRd')
+i_map17.plot(axes=ax, norm =norm, alpha=0.7, zorder=14, autoalign=True, cmap='OrRd')
+i_map18.plot(axes=ax, norm =norm, alpha=0.7, zorder=14, autoalign=True, cmap='OrRd')
+i_map19.plot(axes=ax, norm =norm, alpha=0.7, zorder=14, autoalign=True, cmap='OrRd')
+i_map20.plot(axes=ax, norm =norm, alpha=0.7, zorder=14, autoalign=True, cmap='OrRd')
 
 
 aspect_ratio = i_map.meta['cdelt2'] / i_map.meta['cdelt1']
