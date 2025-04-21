@@ -25,6 +25,12 @@ i_map17 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_120542
 i_map18 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_131642/save_files/intensity_files/eis_20151019_131642_intensity_fe_12_195.fits")
 i_map19 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_144842/save_files/intensity_files/eis_20151019_144842_intensity_fe_12_195.fits")
 i_map20 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_163612/save_files/intensity_files/eis_20151019_163612_intensity_fe_12_195.fits")
+i_map21 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_181312/save_files/intensity_files/eis_20151019_181312_intensity_fe_12_195.fits")
+i_map22 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_194942/save_files/intensity_files/eis_20151019_194942_intensity_fe_12_195.fits")
+i_map23 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_212642/save_files/intensity_files/eis_20151019_212642_intensity_fe_12_195.fits")
+i_map24 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_230142/save_files/intensity_files/eis_20151019_230142_intensity_fe_12_195.fits")
+i_map25 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151020_002612/save_files/intensity_files/eis_20151020_002612_intensity_fe_12_195.fits")
+
 
 
 
@@ -128,13 +134,17 @@ i_map11.plot(axes=ax, norm =norm, alpha=0.7, zorder=11, autoalign=True, cmap='Or
 i_map12.plot(axes=ax, norm =norm, alpha=0.7, zorder=12, autoalign=True, cmap='OrRd')
 i_map13.plot(axes=ax, norm =norm, alpha=0.7, zorder=13, autoalign=True, cmap='OrRd')
 i_map14.plot(axes=ax, norm =norm, alpha=0.7, zorder=14, autoalign=True, cmap='OrRd')
-i_map15.plot(axes=ax, norm =norm, alpha=0.7, zorder=14, autoalign=True, cmap='OrRd')
-i_map16.plot(axes=ax, norm =norm, alpha=0.7, zorder=14, autoalign=True, cmap='OrRd')
-i_map17.plot(axes=ax, norm =norm, alpha=0.7, zorder=14, autoalign=True, cmap='OrRd')
-i_map18.plot(axes=ax, norm =norm, alpha=0.7, zorder=14, autoalign=True, cmap='OrRd')
-i_map19.plot(axes=ax, norm =norm, alpha=0.7, zorder=14, autoalign=True, cmap='OrRd')
-i_map20.plot(axes=ax, norm =norm, alpha=0.7, zorder=14, autoalign=True, cmap='OrRd')
-
+i_map15.plot(axes=ax, norm =norm, alpha=0.7, zorder=15, autoalign=True, cmap='OrRd')
+i_map16.plot(axes=ax, norm =norm, alpha=0.7, zorder=16, autoalign=True, cmap='OrRd')
+i_map17.plot(axes=ax, norm =norm, alpha=0.7, zorder=17, autoalign=True, cmap='OrRd')
+i_map18.plot(axes=ax, norm =norm, alpha=0.7, zorder=18, autoalign=True, cmap='OrRd')
+i_map19.plot(axes=ax, norm =norm, alpha=0.7, zorder=19, autoalign=True, cmap='OrRd')
+i_map20.plot(axes=ax, norm =norm, alpha=0.7, zorder=20, autoalign=True, cmap='OrRd')
+i_map21.plot(axes=ax, norm =norm, alpha=0.7, zorder=21, autoalign=True, cmap='OrRd')
+i_map22.plot(axes=ax, norm =norm, alpha=0.7, zorder=22, autoalign=True, cmap='OrRd')
+i_map23.plot(axes=ax, norm =norm, alpha=0.7, zorder=23, autoalign=True, cmap='OrRd')
+i_map24.plot(axes=ax, norm =norm, alpha=0.7, zorder=24, autoalign=True, cmap='OrRd')
+i_map25.plot(axes=ax, norm =norm, alpha=0.7, zorder=25, autoalign=True, cmap='OrRd')
 
 aspect_ratio = i_map.meta['cdelt2'] / i_map.meta['cdelt1']
 ax.set_aspect(aspect_ratio)
