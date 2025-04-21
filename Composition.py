@@ -26,6 +26,12 @@ i_map17 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_120542
 i_map18 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_131642/composition_files/eis_20151019_131642_composition_CaAr.fits")
 i_map19 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_144842/composition_files/eis_20151019_144842_composition_CaAr.fits")
 i_map20 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_163612/composition_files/eis_20151019_163612_composition_CaAr.fits")
+i_map21 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_181312/composition_files/eis_20151019_181312_composition_CaAr.fits")
+i_map22 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_194942/composition_files/eis_20151019_194942_composition_CaAr.fits")
+i_map23 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_212642/composition_files/eis_20151019_212642_composition_CaAr.fits")
+i_map24 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_230142/composition_files/eis_20151019_230142_composition_CaAr.fits")
+i_map25 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151020_002612/composition_files/eis_20151020_002612_composition_CaAr.fits")
+
 
 #v_map = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151018_102719/save_files/velocity_files/eis_20151018_102719_velocity_fe_12_195.fits")
 #w_map = Map('/mnt/scratch/data/spruksk2/python_output/EIS_work/20151018_102719/save_files/velocity_files/eis_20151018_102719_width_fe_12_195.fits')
@@ -123,6 +129,11 @@ i_map17.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.
 i_map18.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=18, autoalign=True, cmap='RdYlBu')
 i_map19.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=19, autoalign=True, cmap='RdYlBu')
 i_map20.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=20, autoalign=True, cmap='RdYlBu')
+i_map21.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=21, autoalign=True, cmap='RdYlBu')
+i_map22.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=22, autoalign=True, cmap='RdYlBu')
+i_map23.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=23, autoalign=True, cmap='RdYlBu')
+i_map24.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=24, autoalign=True, cmap='RdYlBu')
+i_map25.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=25, autoalign=True, cmap='RdYlBu')
 
 aspect_ratio = i_map.meta['cdelt2'] / i_map.meta['cdelt1']
 ax.set_aspect(aspect_ratio)
