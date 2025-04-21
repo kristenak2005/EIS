@@ -22,6 +22,14 @@ i_map14 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_075442
 i_map15 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_093012/save_files/width_files/eis_20151019_093012_width_fe_12_195.fits")
 i_map16 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_105442/save_files/width_files/eis_20151019_105442_width_fe_12_195.fits")
 i_map17 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_120542/save_files/width_files/eis_20151019_120542_width_fe_12_195.fits")
+i_map18 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_131642/save_files/width_files/eis_20151019_131642_width_fe_12_195.fits")
+i_map19 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_144842/save_files/width_files/eis_20151019_144842_width_fe_12_195.fits")
+i_map20 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_163612/save_files/width_files/eis_20151019_163612_width_fe_12_195.fits")
+i_map21 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_181312/save_files/width_files/eis_20151019_181312_width_fe_12_195.fits")
+i_map22 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_194942/save_files/width_files/eis_20151019_194942_width_fe_12_195.fits")
+i_map23 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_212642/save_files/width_files/eis_20151019_212642_width_fe_12_195.fits")
+i_map24 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151019_230142/save_files/width_files/eis_20151019_230142_width_fe_12_195.fits")
+i_map25 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151020_002612/save_files/width_files/eis_20151020_002612_width_fe_12_195.fits")
 
 #v_map = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151018_102719/save_files/velocity_files/eis_20151018_102719_velocity_fe_12_195.fits")
 #w_map = Map('/mnt/scratch/data/spruksk2/python_output/EIS_work/20151018_102719/save_files/velocity_files/eis_20151018_102719_width_fe_12_195.fits')
@@ -119,6 +127,13 @@ i_map17.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.
 i_map18.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=18, autoalign=True, cmap='coolwarm')
 i_map19.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=19, autoalign=True, cmap='coolwarm')
 i_map20.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=20, autoalign=True, cmap='coolwarm')
+i_map21.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=21, autoalign=True, cmap='coolwarm')
+i_map22.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=22, autoalign=True, cmap='coolwarm')
+i_map23.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=23, autoalign=True, cmap='coolwarm')
+i_map24.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=24, autoalign=True, cmap='coolwarm')
+i_map25.plot(axes=ax, clip_interval=(min_value, max_value) * u.percent, alpha=0.7, zorder=25, autoalign=True, cmap='coolwarm')
+
+
 
 aspect_ratio = i_map.meta['cdelt2'] / i_map.meta['cdelt1']
 ax.set_aspect(aspect_ratio)
