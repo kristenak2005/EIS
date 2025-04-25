@@ -3,6 +3,7 @@ import astropy.units as u
 from sunpy.map import Map
 from astropy.coordinates import SkyCoord
 import matplotlib.colors as colors
+import os
 
 i_map = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151018_102719/save_files/intensity_files/eis_20151018_102719_intensity_fe_12_195.fits")   
 i_map1 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151018_113839/save_files/intensity_files/eis_20151018_113839_intensity_fe_12_195.fits") 
@@ -37,76 +38,8 @@ i_map25 = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151020_002612
 #v_map = Map("/mnt/scratch/data/spruksk2/python_output/EIS_work/20151018_102719/save_files/velocity_files/eis_20151018_102719_velocity_fe_12_195.fits")
 #w_map = Map('/mnt/scratch/data/spruksk2/python_output/EIS_work/20151018_102719/save_files/velocity_files/eis_20151018_102719_width_fe_12_195.fits')
 
-bottom_left = [200, -800] * u.arcsec
-top_right = [1000, -200] * u.arcsec
-
-#i_smap = i_map.submap(SkyCoord(*bottom_left, frame=i_map.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map.coordinate_frame))
-
-#i_smap1 = i_map1.submap(SkyCoord(*bottom_left, frame=i_map1.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map1.coordinate_frame))
-
-#i_smap2 = i_map2.submap(SkyCoord(*bottom_left, frame=i_map2.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map2.coordinate_frame))
-
-#i_smap3 = i_map3.submap(SkyCoord(*bottom_left, frame=i_map3.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map3.coordinate_frame))
-
-#i_smap4 = i_map4.submap(SkyCoord(*bottom_left, frame=i_map4.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map4.coordinate_frame))
-
-#i_smap5 = i_map5.submap(SkyCoord(*bottom_left, frame=i_map5.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map5.coordinate_frame))
-
-#i_smap6 = i_map6.submap(SkyCoord(*bottom_left, frame=i_map6.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map6.coordinate_frame))
-
-#i_smap7 = i_map7.submap(SkyCoord(*bottom_left, frame=i_map7.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map7.coordinate_frame))
-
-#i_smap8 = i_map8.submap(SkyCoord(*bottom_left, frame=i_map8.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map8.coordinate_frame))
-
-#i_smap9 = i_map9.submap(SkyCoord(*bottom_left, frame=i_map9.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map9.coordinate_frame))
-
-#i_smap10 = i_map10.submap(SkyCoord(*bottom_left, frame=i_map10.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map10.coordinate_frame))
-
-#i_smap11 = i_map11.submap(SkyCoord(*bottom_left, frame=i_map11.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map11.coordinate_frame))
-
-#i_smap12 = i_map12.submap(SkyCoord(*bottom_left, frame=i_map12.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map12.coordinate_frame))
-
-#i_smap13 = i_map13.submap(SkyCoord(*bottom_left, frame=i_map13.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map13.coordinate_frame))
-
-#i_smap14 = i_map14.submap(SkyCoord(*bottom_left, frame=i_map14.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map14.coordinate_frame))
-
-#i_smap15 = i_map15.submap(SkyCoord(*bottom_left, frame=i_map15.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map15.coordinate_frame))
-
-
-#i_smap16 = i_map16.submap(SkyCoord(*bottom_left, frame=i_map16.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map16.coordinate_frame))
-
-
-#i_smap17 = i_map17.submap(SkyCoord(*bottom_left, frame=i_map17.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map17.coordinate_frame))
-
-
-#i_smap18 = i_map18.submap(SkyCoord(*bottom_left, frame=i_map18.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map18.coordinate_frame))
-
-
-#i_smap19 = i_map19.submap(SkyCoord(*bottom_left, frame=i_map19.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map19.coordinate_frame))
-
-#i_smap20 = i_map20.submap(SkyCoord(*bottom_left, frame=i_map20.coordinate_frame),
- #                     top_right=SkyCoord(*top_right, frame=i_map20.coordinate_frame))
-
+bottom_left = [-1000, -1000] * u.arcsec
+top_right = [1000, -1000] * u.arcsec
 
 
 min_value = 0
@@ -149,5 +82,9 @@ i_map25.plot(axes=ax, norm =norm, alpha=0.7, zorder=25, autoalign=True, cmap='Or
 aspect_ratio = i_map.meta['cdelt2'] / i_map.meta['cdelt1']
 ax.set_aspect(aspect_ratio)
 
+save_dir = "mnt/scratch/data/spruksk2/python_output/EIS_work/"
+output_filename = os.path.join(save_dir, 'composite_intensity_map.png")
+plt.savefig(output_filename, bbox_inches='tight')
+                              
 ax.set_title("EIS Intensity Composite Map")
 plt.show()
