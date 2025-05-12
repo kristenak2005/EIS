@@ -10,12 +10,12 @@ from sunpy.coordinates import propagate_with_solar_surface
 
 output_location = '/cd/mnt/scratch/data/spruksk2/python_output/EIS_work/20151018_205143/composition_files'
 #output_location1 = '/cd/mnt/scratch/data/spruksk2/python_output/EIS_work/20151018_191443/composition_files'
-
 file = glob.glob(output_location+'/eis_20151018_205143_composition_CaAr.fits')
+arrs = fits.open(file[0])
+#arrs.info()
+comp_map = arrs['comp_map'].data
 
-arrs = asdf.open(file[0])
-
-comp_map = arrs['int_map']
+#comp_map_wcs = WCS(arrs['comp_map'].header)
 #int_map = arrs['int_map']
 #dopp_map = arrs['dopp_map']
 #wid_map = arrs['wid_map']
