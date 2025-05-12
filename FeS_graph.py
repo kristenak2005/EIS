@@ -8,23 +8,24 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sunpy.map import Map
 
-
+#Active region
 output_location_ar = '/mnt/scratch/data/spruksk2/extracted_files/eis_20151018_205143/'
 file_ar = glob.glob(output_location_ar + '/eis_20151018_205143_composition_FeS.fits')
 compFeS = Map(file_ar[0])  # Existing CaAr composition map
 
-ar_bottom_left = SkyCoord(500 * u.arcsec, -60 * u.arcsec, frame=compFeS.coordinate_frame)
-ar_top_right = SkyCoord(560 * u.arcsec, 150 * u.arcsec, frame=compFeS.coordinate_frame)
+ar_bottom_left = SkyCoord(300 * u.arcsec, -550 * u.arcsec, frame=compFeS.coordinate_frame)
+ar_top_right = SkyCoord(700 * u.arcsec, -250 * u.arcsec, frame=compFeS.coordinate_frame)
 comp_ar_map = compFeS.submap(ar_bottom_left, top_right=ar_top_right)
 comp_ar = comp_ar_map.data.flatten()
 
-qs_bottom_left = SkyCoord(700 * u.arcsec, 10 * u.arcsec, frame=compFeS.coordinate_frame)
-qs_top_right = SkyCoord(760 * u.arcsec, 220 * u.arcsec, frame=compFeS.coordinate_frame)
+#Quiet sun
+qs_bottom_left = SkyCoord(100 * u.arcsec, 0 * u.arcsec, frame=compFeS.coordinate_frame)
+qs_top_right = SkyCoord(500 * u.arcsec, 300 * u.arcsec, frame=compFeS.coordinate_frame)
 comp_qs_map = compCaAr.submap(qs_bottom_left, top_right=qs_top_right)
 comp_qs = comp_qs_map.data.flatten()
 
 output_location_qs = '/mnt/scratch/data/spruksk2/extracted_files/eis_20151018_191443'
-file_qs = glob.glob(output_location_qs + '/eis_20151019_191443_composition_FeS.fits')
+file_qs = glob.glob(output_location_qs + '/eis_20151018_191443_composition_FeS.fits')
 compFeS_qs = Map(file_qs[0])
 
 qs_map_file = compFeS_qs.submap(qs_bottom_left, top_right=qs_top_right)
@@ -40,7 +41,4 @@ df = pd.concat([ar_data, qs_data, qs_file_data], ignore_index=True)
 # --- Plot KDE ---
 fig = plt.figure(figsize=(15,14))
 sns.kdeplot(df, x='comp', hue='type', fill=True, alpha=0.5, legend=True, bw_adjust=0.5)
-plt.xlabel("Composition (comp)")
-plt.ylabel("Density")
-plt.title("Composition Comparison: AR vs Quiet Sun (same map + separate file)")
 plt.show()
