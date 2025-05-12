@@ -35,10 +35,8 @@ ar_data = pd.DataFrame({'comp': comp_ar, 'type': np.tile('Active Region', len(co
 qs_data = pd.DataFrame({'comp': comp_qs, 'type': np.tile('Quiet Sun (same map)', len(comp_qs))})
 qs_file_data = pd.DataFrame({'comp': comp_qs_file, 'type': np.tile('Quiet Sun (separate file)', len(comp_qs_file))})
 
-# Combine all
 df = pd.concat([ar_data, qs_data, qs_file_data], ignore_index=True)
 
-# --- Plot KDE ---
 fig = plt.figure(figsize=(15,14))
 sns.kdeplot(df, x='comp', hue='type', fill=True, alpha=0.5, legend=True, bw_adjust=0.5)
 plt.show()
