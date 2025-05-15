@@ -37,8 +37,11 @@ qs_file_data = pd.DataFrame({'comp': comp_qs_file, 'type': np.tile('Quiet Sun (s
 
 # Combine all
 df = pd.concat([ar_data, qs_data, qs_file_data], ignore_index=True)
+df.loc[(df['comp'] <= 0) | (df['comp'] > 10), 'comp'] = np.nan
 
 # --- Plot KDE ---
 fig = plt.figure(figsize=(15,14))
 sns.kdeplot(df, x='comp', hue='type', fill=True, alpha=0.5, legend=True, bw_adjust=0.5)
+#plt.xlim(-2000, 2000)
+#data[data <= 0] = 0
 plt.show()
