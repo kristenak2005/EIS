@@ -13,8 +13,8 @@ eis_evts = ['20151018_102719','20151018_113839','20151018_124939','20151018_1409
             '20151019_230142']
 
 # Set min/max velocity (adjust as needed)
-min_value = -50  # km/s
-max_value = 50   # km/s
+min_value = --15  # km/s
+max_value = 15   # km/s
 
 # Open first velocity map to define figure setup
 v_map = Map(f'/mnt/scratch/data/spruksk2/python_output/EIS_work/{eis_evts[0]}/save_files/velocity_files/eis_{eis_evts[0]}_velocity_fe_12_195.fits')
@@ -36,7 +36,7 @@ z_val = 0
 for evt in eis_evts:
     v_map = Map(f'/mnt/scratch/data/spruksk2/python_output/EIS_work/{evt}/save_files/velocity_files/eis_{evt}_velocity_fe_12_195.fits')
     aspect = v_map.meta['cdelt2'] / v_map.meta['cdelt1']
-    v_map.plot(axes=ax, norm=norm, alpha=0.7, zorder=z_val, autoalign=True, cmap='RdBu_r', aspect=aspect)
+    v_map.plot(axes=ax, norm=norm, alpha=0.7, zorder=z_val, autoalign=True, cmap='coolwarm', aspect=aspect)
     z_val += 1
 
 ax.set_xlim(pixel_coords_x)
