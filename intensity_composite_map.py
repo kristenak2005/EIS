@@ -42,8 +42,8 @@ bottom_left_active = SkyCoord((300) * u.arcsec, (-550) * u.arcsec, frame=i_map.c
 top_right_active = SkyCoord((700) * u.arcsec, (-250) * u.arcsec, frame=i_map.coordinate_frame)
 
 # Quiet region centered at (-450, 500)
-bottom_left_quiet = SkyCoord((250) * u.arcsec, (350) * u.arcsec, frame=i_map.coordinate_frame)
-top_right_quiet = SkyCoord((650) * u.arcsec, (650) * u.arcsec, frame=i_map.coordinate_frame)
+bottom_left_quiet = SkyCoord((100) * u.arcsec, (0) * u.arcsec, frame=i_map.coordinate_frame)
+top_right_quiet = SkyCoord((500) * u.arcsec, (300) * u.arcsec, frame=i_map.coordinate_frame)
 
 # Draw quadrangles for active and quiet regions
 i_map.draw_quadrangle(bottom_left_active, axes=ax, top_right=top_right_active, edgecolor="red")
