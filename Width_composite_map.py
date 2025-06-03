@@ -14,7 +14,7 @@ eis_evts = ['20151018_102719','20151018_113839','20151018_124939','20151018_1409
 
 # Set min/max velocity (adjust as needed)
 min_value = 0  # km/s
-max_value = 0.04   # km/s
+max_value = 0.05   # km/s
 
 # Open first velocity map to define figure setup
 w_map = Map(f'/mnt/scratch/data/spruksk2/python_output/EIS_work/{eis_evts[0]}/save_files/width_files/eis_{eis_evts[0]}_width_fe_12_195.fits')
